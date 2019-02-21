@@ -7,6 +7,4 @@ FactoryBot.define do
       title { nil }
     end
   end
-
-
 end
