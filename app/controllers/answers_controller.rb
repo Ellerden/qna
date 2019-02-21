@@ -1,7 +1,5 @@
 class AnswersController < ApplicationController
-  def new
-    @answer = question.answers.new
-  end
+  def new; end
 
   def edit; end
 
@@ -16,7 +14,7 @@ class AnswersController < ApplicationController
 
   def update
     if answer.update(answer_params)
-      redirect_to @question
+      redirect_to question
     else
       render :edit
     end
@@ -32,7 +30,7 @@ class AnswersController < ApplicationController
     @answer ||= params[:id] ? Answer.find(params[:id]) : Answer.new
   end
 
-  helper_method :answer
+  helper_method :answer, :question
 
   def answer_params
     params.require(:answer).permit(:body)
