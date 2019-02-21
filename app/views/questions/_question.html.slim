@@ -1,0 +1,8 @@
+h2 Question #{question.id}
+p 
+  b = question.title
+p = question.body
+
+h2 Answers:
+= render question.answers
+= link_to "Create Answer", new_question_answer_path(question)

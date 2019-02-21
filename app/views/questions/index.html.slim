@@ -1,6 +1,2 @@
 h1 All questions
-- @questions.each do |q|
-  h2 Question #{q.id}
-  p = q.title
-  p = q.body
-  = link_to "Create Answer", new_question_answer_path(q)
+= render @questions

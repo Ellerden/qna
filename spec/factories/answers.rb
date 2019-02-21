@@ -3,4 +3,8 @@ FactoryBot.define do
     body { "MyText" }
     question { nil }
   end
+
+  trait :notvalid do
+    body { nil }
+  end
 end
