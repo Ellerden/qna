@@ -4,7 +4,7 @@ FactoryBot.define do
     question { nil }
   end
 
-  trait :notvalid do
+  trait :invalid do
     body { nil }
   end
 end
