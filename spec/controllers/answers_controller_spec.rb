@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let (:question) { create(:question) }
-  let (:answer) { create(:answer, question: question) }
+  let(:question) { create(:question) }
+  let(:answer) { create(:answer, question: question) }
 
   describe 'GET #new' do
     before { get :new, params: { question_id: question } }
@@ -44,8 +46,8 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'PATCH #update' do
     context 'with valid attributes' do
-      it 'changes answer attributes' do 
-        patch :update, params: {  question_id: question, id: answer, answer: { body: 'new body' } }
+      it 'changes answer attributes' do
+        patch :update, params: { question_id: question, id: answer, answer: { body: 'new body' } }
         answer.reload
 
         expect(answer.body).to eq 'new body'
