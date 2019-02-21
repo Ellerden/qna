@@ -14,7 +14,7 @@ class AnswersController < ApplicationController
 
   def update
     if answer.update(answer_params)
-      redirect_to question
+      redirect_to answer.question
     else
       render :edit
     end
@@ -23,7 +23,7 @@ class AnswersController < ApplicationController
   private
 
   def question
-    @question ||= Question.find(params[:question_id])
+    @question ||= params[:question_id] ? Question.find(params[:question_id]) : nil
   end
 
   def answer
