@@ -1,20 +1,25 @@
 # frozen_string_literal: true
 
 class AnswersController < ApplicationController
-  def new; end
+  def new
+    @answer = question.answers.new
+  end
 
   def edit; end
 
   def create
     @answer = question.answers.build(answer_params)
+    @answer.author = current_user
     if @answer.save
-      redirect_to question
+      redirect_to question, notice: 'Your answer was successfully added.'
     else
-      render :new
+      redirect_to question, notice: 'Something went wrong - answer was not added. Try again.'
     end
   end
 
   def update
+    return unless current_user.author_of?(answer)
+
     if answer.update(answer_params)
       redirect_to answer.question
     else
@@ -23,8 +28,9 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    answer.destroy
-    redirect_to question
+    question_to_redirect = answer.question
+    answer.destroy if current_user.author_of?(answer)
+    redirect_to question_to_redirect
   end
 
   private
