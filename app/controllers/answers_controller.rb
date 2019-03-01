@@ -13,7 +13,7 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to question, notice: 'Your answer was successfully added.'
     else
-      redirect_to question, notice: 'Something went wrong - answer was not added. Try again.'
+      redirect_to question, alert: 'Something went wrong - answer was not added. Try again.'
     end
   end
 

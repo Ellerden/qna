@@ -13,6 +13,7 @@ feature 'User can see list of questions', %q{
 # думаю что выбор вопроса должен быть все-таки здесь
   scenario 'chooses particular question' do
     visit questions_path
+    
     click_on question_path
   end
 end

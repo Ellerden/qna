@@ -77,14 +77,15 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'DELETE #destroy' do
     let!(:question) { create(:question) }
-    let!(:answer) { create(:answer, question: question) }
+    let!(:user) { create(:user) }
+    let!(:answer) { create(:answer, question: question, author: user) }
 
     it 'deletes the answer' do
-      expect { delete :destroy, params: { question_id: question, id: answer } }.to change(Answer, :count).by(-1)
+      expect { delete :destroy, params: { question_id: question, id: answer, author_id: user } }.to change(Answer, :count).by(-1)
     end
 
     it 'redirects to show view of assigned question' do
-      delete :destroy, params: { question_id: question, id: answer }
+      delete :destroy, params: { question_id: question, id: answer, author_id: user }
       expect(response).to redirect_to question
     end
   end
