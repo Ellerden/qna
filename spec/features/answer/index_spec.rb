@@ -7,13 +7,12 @@ feature 'User can see answers to the particular question', %q{
 } do
   given(:user) { create(:user) }
   given(:question) { create(:question, author: user) }
-  given(:answer) { create(:answer, question: question, author: user) }
-  given(:answers) { create_list(:answers, 3) }
 
+  scenario 'User can see all the answers on the same page as the question' do
+    visit question_path(question)
 
-    scenario 'User can see all the answers on the same page as the question' do
-    end
+    expect(page).to have_content(question.title)
+    expect(page).to have_content(question.body)
+    expect(page).to have_content(@answers)
   end
-
 end
-
