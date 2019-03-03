@@ -6,8 +6,8 @@ feature 'User can see particular question', %q{
   Or leave my own answer
 } do
   given(:user) { create(:user) }
-  given(:question) { create(:question, author: user) }
-  given(:answer) { create(:answer, question: question, author: user) }
+  given!(:question) { create(:question, author: user) }
+  given!(:answer) { create(:answer, question: question, author: user) }
 
   scenario 'User reads particular question and answers to it' do
     visit question_path(question)

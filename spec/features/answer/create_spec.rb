@@ -16,7 +16,6 @@ feature 'User can create answer', %q{
     end
 
     scenario 'tries to answer the question on the same page with the question' do
-
       fill_in 'Body', with: 'text text text'
       click_on 'Create Answer'
 
@@ -24,7 +23,7 @@ feature 'User can create answer', %q{
       expect(page).to have_content question.body
       expect(page).to have_content 'text text text'
     end
-# ОШИБКИ ВООБЩЕ НИЧЕГО НЕ ГОВОРЯТ О ТОМ, ЧТО ПРОИСХОДИТ - ОНИ ДОЛЖНЫ БЫТЬ БОЛЕЕ ИНФОРМАТИВНЫМИ ЯВНО
+
     scenario 'tries to answer the question with blank' do
       click_on 'Create Answer'
 
