@@ -23,14 +23,14 @@ class AnswersController < ApplicationController
     if answer.update(answer_params)
       redirect_to answer.question
     else
-      render :edit
+      redirect_to question, alert: 'Something went wrong - answer was not updated. Try again.'
     end
   end
 
   def destroy
     question_to_redirect = answer.question
     answer.destroy if current_user && current_user.author_of?(answer)
-    redirect_to question_to_redirect
+    redirect_to question_path(question_to_redirect), notice: 'Your answer was successfully deleted.'
   end
 
   private
