@@ -26,7 +26,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    return unless current_user.author_of?(question)
+    return unless current_user && current_user.author_of?(question)
 
     if question.update(question_params)
       redirect_to question, notice: 'Your question was successfully updated.'

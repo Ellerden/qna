@@ -18,7 +18,7 @@ class AnswersController < ApplicationController
   end
 
   def update
-    return unless current_user.author_of?(answer)
+    return unless current_user && current_user.author_of?(answer)
 
     if answer.update(answer_params)
       redirect_to answer.question
@@ -29,7 +29,7 @@ class AnswersController < ApplicationController
 
   def destroy
     question_to_redirect = answer.question
-    answer.destroy if current_user.author_of?(answer)
+    answer.destroy if current_user && current_user.author_of?(answer)
     redirect_to question_to_redirect
   end
 

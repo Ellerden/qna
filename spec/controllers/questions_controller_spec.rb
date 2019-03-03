@@ -3,11 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) { create(:question) }
   let(:user) { create(:user) }
+  let(:question) { create(:question, author: user) }
 
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 3) }
+    let(:questions) { create_list(:question, 3, author: user) }
 
     before { get :index }
 
@@ -21,6 +21,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
+    let(:answers) { create_list(:answer, 2, question: question, author: user }
     before { get :show, params: { id: question } }
 
     # it 'assigns the requested question to @question' do
