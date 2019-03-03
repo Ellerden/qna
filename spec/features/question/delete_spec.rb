@@ -38,7 +38,7 @@ feature 'User can delete his/her question', %q{
 
   scenario 'Unauthenticated user tries to delete an answer' do
     visit question_path(question)
-    
+
     within(".question") do
       expect(page).to have_content question.body
       expect(page).not_to have_content 'Delete'
