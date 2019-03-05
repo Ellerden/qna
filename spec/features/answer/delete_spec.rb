@@ -28,13 +28,13 @@ feature 'User can delete his/her answer', %q{
     scenario 'tries to delete someone elses answer' do
       within(".answer_#{answer2.id}") do
         expect(page).to have_content(answer2.body)
-        expect(page).not_to have_content 'Delete'
+        expect(page).not_to have_link 'Delete'
       end
     end
   end
 
   scenario 'Unauthenticated user tries to delete an answer' do
     visit question_path(question)
-    expect(page).not_to have_content 'Delete'
+    expect(page).not_to have_link 'Delete'
   end
 end

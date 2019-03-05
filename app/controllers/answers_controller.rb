@@ -4,12 +4,11 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    @answer = question.answers.build(answer_params)
-    @answer.author = current_user
+    @answer = current_user.answers.create(answer_params.merge(question_id: question.id))
     if @answer.save
       redirect_to question, notice: 'Your answer was successfully added.'
     else
-      render 'questions/show'
+      render template: "questions/show"
     end
   end
 
@@ -21,6 +20,18 @@ class AnswersController < ApplicationController
       redirect_to question_to_redirect, notice: 'Your answer was successfully deleted.'
     else
       render 'questions/show', notice: 'Something went wrong - answer was not deleted. Try again.'
+    end
+  end
+
+  def edit; end
+
+  def update
+    return unless current_user.author_of?(answer)
+
+    if answer.update(answer_params)
+      redirect_to answer.question
+    else
+      render 'questions/show'
     end
   end
 

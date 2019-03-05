@@ -30,6 +30,7 @@ feature 'User can create question', %q{
       click_on 'Ask'
 
       expect(page).to have_content "Title can't be blank"
+      expect(page).to have_content "Body can't be blank"
     end
   end
 
