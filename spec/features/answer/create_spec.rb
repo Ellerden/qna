@@ -27,7 +27,7 @@ feature 'User can create answer', %q{
     scenario 'tries to answer the question with blank' do
       click_on 'Create Answer'
 
-      expect(page).to have_content 'Something went wrong - answer was not added. Try again.'
+      expect(page).to have_content "Body can't be blank"
     end
   end
 
@@ -37,6 +37,5 @@ feature 'User can create answer', %q{
 
     expect(current_path).to eq user_session_path
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
-
   end
 end
