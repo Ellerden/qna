@@ -18,6 +18,7 @@ feature 'User can create answer', %q{
     scenario 'tries to answer the question on the same page with the question' do
       fill_in 'Body', with: 'text text text'
       click_on 'Create Answer'
+      save_and_open_page
 
       expect(page).to have_content question.title
       expect(page).to have_content question.body
@@ -33,9 +34,10 @@ feature 'User can create answer', %q{
 
   scenario 'Unauthenticated user tries to answer the question' do
     visit question_path(question)
-    click_on 'Create Answer'
 
-    expect(current_path).to eq user_session_path
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).not_to have_button 'Create Answer'
+    # click_on 'Create Answer'
+    # expect(current_path).to eq user_session_path
+    # expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 end
