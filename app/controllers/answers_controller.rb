@@ -14,7 +14,7 @@ class AnswersController < ApplicationController
 
   def destroy
     return head :forbidden unless current_user.author_of?(answer)
- 
+    
     question_to_redirect = answer.question
     if answer.destroy
       redirect_to question_to_redirect, notice: 'Your answer was successfully deleted.'

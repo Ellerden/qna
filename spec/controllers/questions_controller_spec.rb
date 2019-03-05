@@ -43,18 +43,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'GET #edit' do
-    before { login(user) }
-    before { get :edit, params: { id: question } }
-
-    # it 'assigns the requested question to @question' do
-    #   expect(assigns(:question)).to eq question
-    # end
-    it 'renders edit view' do
-      expect(response).to render_template :edit
-    end
-  end
-
   describe 'POST #create' do
     before { login(user) }
 
@@ -80,17 +68,15 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    before { login(user) }
-
-    let(:other_user) { create(:user) }
     let!(:question) { create(:question, author: user) }
+    let(:other_user) { create(:user) }
     let!(:other_question) { create(:question, author: other_user) }
 
     context 'Authenticated user' do
-      before { sign_in(user) }
+      before { login(user) }
 
       it 'deletes the question' do
-        expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+        expect { delete :destroy, params: { id: question } }.to change(Question,:count).by(-1)
       end
 
       it 'redirects to index' do
@@ -99,15 +85,14 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'tries to delete not his/her question' do
-        delete :destroy, params: { question_id: question, id: other_answer }
+        delete :destroy, params: { question_id: question, id: other_question }
         expect { delete :destroy, params: { id: other_question } }.not_to change(Question, :count)
         expect(response.status).to eq(403)
       end
     end
 
     it 'Not Authenticated user tries to delete the answer' do
-      expect { delete :destroy, params: { id: answer } }.not_to change(Answer, :count)
-      expect(response.status).to eq(403)
+      expect { delete :destroy, params: { id: other_question } }.not_to change(Question, :count)
     end
   end
 end
