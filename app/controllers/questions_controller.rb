@@ -7,9 +7,7 @@ class QuestionsController < ApplicationController
     @questions = Question.all
   end
 
-  def show
-    p 'asdddd'
-  end
+  def show; end
 
   def new; end
 
@@ -23,7 +21,8 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    return unless current_user.author_of?(question)
+    return head :forbidden unless current_user.author_of?(question)
+
     if question.destroy
       redirect_to questions_path, notice: 'Your question was successfully deleted.'
     else
