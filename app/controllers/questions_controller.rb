@@ -9,35 +9,24 @@ class QuestionsController < ApplicationController
 
   def show; end
 
-  def new
-    @question = current_user.questions.build
-    #@question = Question.new
-  end
-
-  def edit; end
+  def new; end
 
   def create
     @question = current_user.questions.build(question_params)
     if @question.save
       redirect_to @question, notice: 'Your question was successfully created.'
     else
-      render :new, notice: 'Something went wrong - question was not added. Try again.'
-    end
-  end
-
-  def update
-    return unless current_user && current_user.author_of?(question)
-
-    if question.update(question_params)
-      redirect_to question, notice: 'Your question was successfully updated.'
-    else
-      render :edit
+      render :new
     end
   end
 
   def destroy
-    question.destroy if current_user && current_user.author_of?(question)
-    redirect_to questions_path, notice: 'Your question was successfully deleted.'
+    return unless current_user.author_of?(question)
+    if question.destroy
+      redirect_to questions_path, notice: 'Your question was successfully deleted.'
+    else
+      render :show, notice: 'Something went wrong - question was not deleted. Try again.'
+    end
   end
 
   private

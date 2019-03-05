@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
 class AnswersController < ApplicationController
-  def new
-    @answer = question.answers.new
-  end
-
-  def edit; end
+  before_action :authenticate_user!
 
   def create
     @answer = question.answers.build(answer_params)
@@ -13,24 +9,19 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to question, notice: 'Your answer was successfully added.'
     else
-      redirect_to question, alert: 'Something went wrong - answer was not added. Try again.'
-    end
-  end
-
-  def update
-    return unless current_user && current_user.author_of?(answer)
-
-    if answer.update(answer_params)
-      redirect_to answer.question
-    else
-      redirect_to question, alert: 'Something went wrong - answer was not updated. Try again.'
+      render 'questions/show'
     end
   end
 
   def destroy
     question_to_redirect = answer.question
-    answer.destroy if current_user && current_user.author_of?(answer)
-    redirect_to question_path(question_to_redirect), notice: 'Your answer was successfully deleted.'
+    return unless current_user.author_of?(answer)
+
+    if answer.destroy
+      redirect_to question_to_redirect, notice: 'Your answer was successfully deleted.'
+    else
+      render 'questions/show', notice: 'Something went wrong - answer was not deleted. Try again.'
+    end
   end
 
   private

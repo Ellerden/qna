@@ -1,2 +1,3 @@
 h1 Create answer
-= render "form"
+- if user_signed_in?
+  = render "form"

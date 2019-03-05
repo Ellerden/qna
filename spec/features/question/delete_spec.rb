@@ -31,7 +31,7 @@ feature 'User can delete his/her question', %q{
 
       within(".question") do
         expect(page).to have_content question2.body
-        expect(page).not_to have_content 'Delete'
+        expect(page).not_to have_link 'Delete'
       end
     end
   end
@@ -41,7 +41,7 @@ feature 'User can delete his/her question', %q{
 
     within(".question") do
       expect(page).to have_content question.body
-      expect(page).not_to have_content 'Delete'
+      expect(page).not_to have_link 'Delete'
     end
   end
 end

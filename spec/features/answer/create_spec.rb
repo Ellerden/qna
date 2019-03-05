@@ -34,6 +34,9 @@ feature 'User can create answer', %q{
   scenario 'Unauthenticated user tries to answer the question' do
     visit question_path(question)
     click_on 'Create Answer'
-    expect(page).to have_content 'Something went wrong - answer was not added. Try again.'
+
+    expect(current_path).to eq user_session_path
+    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+
   end
 end
