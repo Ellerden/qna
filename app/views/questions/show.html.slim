@@ -1,2 +1,6 @@
 h1 Show question #{question.id}
 = render question
+br
+h3 Your answer
+- if user_signed_in?
+  = render 'answers/form'

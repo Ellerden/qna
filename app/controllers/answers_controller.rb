@@ -1,30 +1,37 @@
 # frozen_string_literal: true
 
 class AnswersController < ApplicationController
-  def new; end
-
-  def edit; end
+  before_action :authenticate_user!
 
   def create
-    @answer = question.answers.build(answer_params)
+    @answer = current_user.answers.create(answer_params.merge(question_id: question.id))
     if @answer.save
-      redirect_to question
+      redirect_to question, notice: 'Your answer was successfully added.'
     else
-      render :new
-    end
-  end
-
-  def update
-    if answer.update(answer_params)
-      redirect_to answer.question
-    else
-      render :edit
+      render 'questions/show'
     end
   end
 
   def destroy
-    answer.destroy
-    redirect_to question
+    return head :forbidden unless current_user.author_of?(answer)
+
+    if answer.destroy
+      redirect_to answer.question, notice: 'Your answer was successfully deleted.'
+    else
+      render 'questions/show', notice: 'Something went wrong - answer was not deleted. Try again.'
+    end
+  end
+
+  def edit; end
+
+  def update
+    return unless current_user.author_of?(answer)
+
+    if answer.update(answer_params)
+      redirect_to answer.question
+    else
+      render 'questions/show'
+    end
   end
 
   private
