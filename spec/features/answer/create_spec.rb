@@ -36,8 +36,5 @@ feature 'User can create answer', %q{
     visit question_path(question)
 
     expect(page).not_to have_button 'Create Answer'
-    # click_on 'Create Answer'
-    # expect(current_path).to eq user_session_path
-    # expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 end

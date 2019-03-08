@@ -30,7 +30,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'does not save the question' do
         expect { post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) } }.to_not change(Answer, :count)
       end
-      
+
       it 're-renders show view of assigned question' do
         post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }
         expect(response).to render_template 'questions/show'
@@ -39,10 +39,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let(:other_user) { create(:user) }
-    let!(:other_answer) { create(:answer, question: question, author: other_user) }
-
-    context 'Authenticated user' do
+    context 'Author of the answer' do
       before { login(user) }
 
       it 'deletes his/her own answer' do
@@ -53,16 +50,21 @@ RSpec.describe AnswersController, type: :controller do
         delete :destroy, params: { id: answer }
         expect(response).to redirect_to question
       end
-
-      it 'tries to delete not his/her answer' do
-        delete :destroy, params: { question_id: question, id: other_answer }
-        expect { delete :destroy, params: { id: other_answer } }.not_to change(Answer, :count)
-        expect(response.status).to eq(403)
-      end
     end
 
-    it 'Not Authenticated user tries to delete the answer' do
-      expect { delete :destroy, params: { id: answer } }.not_to change(Question, :count)
+    context 'Not an author of the answer' do
+      let(:other_user) { create(:user) }
+      before { login(other_user) }
+
+      it 'tries to delete not his/her answer' do
+        expect { delete :destroy, params: { id: answer } }.not_to change(Answer, :count)
+      end
+
+      it 'gets forbidden status trying to delete someone elses answer' do
+        delete :destroy, params: { id: answer }
+
+        expect(response.status).to eq(403)
+      end
     end
   end
 end

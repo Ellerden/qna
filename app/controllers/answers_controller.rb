@@ -8,16 +8,15 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to question, notice: 'Your answer was successfully added.'
     else
-      render template: "questions/show"
+      render 'questions/show'
     end
   end
 
   def destroy
     return head :forbidden unless current_user.author_of?(answer)
-    
-    question_to_redirect = answer.question
+
     if answer.destroy
-      redirect_to question_to_redirect, notice: 'Your answer was successfully deleted.'
+      redirect_to answer.question, notice: 'Your answer was successfully deleted.'
     else
       render 'questions/show', notice: 'Something went wrong - answer was not deleted. Try again.'
     end

@@ -35,9 +35,7 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'GET #new' do
     before { login(user) }
     before { get :new }
-    # it 'assigns the requested question to @question' do
-    #   expect(assigns(:question)).to be_a_new(Question)
-    # end
+
     it 'renders new view' do
       expect(response).to render_template :new
     end
@@ -76,13 +74,11 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'DELETE #destroy' do
     let!(:question) { create(:question, author: user) }
-    let(:other_user) { create(:user) }
-    let!(:other_question) { create(:question, author: other_user) }
 
-    context 'Authenticated user' do
+    context 'Author of the question' do
       before { login(user) }
 
-      it 'deletes the question' do
+      it 'deletes his/her own question' do
         expect { delete :destroy, params: { id: question } }.to change(Question,:count).by(-1)
       end
 
@@ -90,16 +86,20 @@ RSpec.describe QuestionsController, type: :controller do
         delete :destroy, params: { id: question }
         expect(response).to redirect_to questions_path
       end
-
-      it 'tries to delete not his/her question' do
-        delete :destroy, params: { question_id: question, id: other_question }
-        expect { delete :destroy, params: { id: other_question } }.not_to change(Question, :count)
-        expect(response.status).to eq(403)
-      end
     end
 
-    it 'Not Authenticated user tries to delete the answer' do
-      expect { delete :destroy, params: { id: other_question } }.not_to change(Question, :count)
+    context 'Not an author of the question' do
+      let(:other_user) { create(:user) }
+      before { login(other_user) }
+
+      it 'tries to delete not his/her question' do
+        expect { delete :destroy, params: { id: question } }.not_to change(Question, :count)
+      end
+
+      it 'gets forbidden status trying to delete someone elses answer' do
+        delete :destroy, params: { id: question }
+        expect(response.status).to eq(403)
+      end
     end
   end
 end
