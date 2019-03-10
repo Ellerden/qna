@@ -30,6 +30,8 @@ feature 'User can edit his question', %q{
         click_on 'Ask'
 
         expect(current_path).to eq question_path(question)
+        expect(page).to have_content 'Your question was successfully edited'
+
         expect(page).to_not have_content question.title
         expect(page).to_not have_content question.body
         expect(page).to have_content 'edited title'

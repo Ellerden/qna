@@ -43,12 +43,7 @@ RSpec.describe AnswersController, type: :controller do
       before { login(user) }
 
       it 'deletes his/her own answer' do
-        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
-      end
-
-      it 'redirects to show view of assigned question' do
-        delete :destroy, params: { id: answer }
-        expect(response).to redirect_to question
+        expect { delete :destroy, params: { id: answer }, format: :js }.to change(Answer, :count).by(-1)
       end
     end
 
@@ -87,8 +82,8 @@ RSpec.describe AnswersController, type: :controller do
     context 'with invalid attributes' do
       it 'does not change answer attributes' do
         expect do
-           patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid, format: :js) }
-        end.to_not change(answer, :body)  
+          patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid, format: :js) }
+        end.to_not change(answer, :body)
       end
 
       it 'renders update view' do

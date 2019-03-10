@@ -10,11 +10,7 @@ class AnswersController < ApplicationController
   def destroy
     return head :forbidden unless current_user.author_of?(answer)
 
-    if answer.destroy
-      redirect_to answer.question, notice: 'Your answer was successfully deleted.'
-    else
-      render 'questions/show', notice: 'Something went wrong - answer was not deleted. Try again.'
-    end
+    answer.destroy
   end
 
   def edit; end
