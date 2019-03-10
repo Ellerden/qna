@@ -102,4 +102,59 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #update' do
+    let!(:question) { create(:question, author: user) }
+
+    before { login(user) }
+
+    context 'Author with valid attributes' do
+      it 'changes question title' do
+        patch :update, params: { id: question, question: { title: 'new title' } }
+        question.reload
+        expect(question.title).to eq 'new title'
+      end
+
+      it 'changes question body' do
+        patch :update, params: { id: question, question: { body: 'new body' } }
+        question.reload
+        expect(question.body).to eq 'new body'
+      end
+
+      it 'redirects to question' do
+        patch :update, params: { id: question, question: { body: 'new body' } }
+        expect(response).to redirect_to question
+      end
+    end
+
+    context 'Author with invalid attributes' do
+      it 'does not change question attributes' do
+        expect do
+          patch :update, params: { id: question, question: attributes_for(:question, :invalid) }
+        end.to_not change(question, :body)
+      end
+
+      it 're-renders edit form' do
+        patch :update, params: { id: question, question: attributes_for(:question, :invalid) }
+        expect(response).to render_template :edit
+      end
+    end
+
+    context 'Not an author' do
+      let(:other_user) { create(:user) }
+      before { login(other_user) }
+
+      it 'tries to edit not his/her question' do
+        expect do
+          patch :update, params: { id: question, question: { body: 'new body' } }
+        end.to_not change(question, :body)
+      end
+
+      it 'gets forbidden status trying to edit someone elses question' do
+        patch :update, params: { id: question, question: { body: 'new body' } }
+
+        expect(response.status).to eq(403)
+      end
+    end
+  end
 end
