@@ -95,21 +95,34 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'POST #best' do
     context 'Author of the question' do
+      before { login(user) }
+
       it 'tries to select one best answer' do
-        post :best, params: { id: answer, format: :js }
+        post :set_best, params: { id: answer, format: :js }
         answer.reload
         expect(answer.best).to be true
       end
 
       it 'renders ranked answers' do
-
+        post :set_best, params: { id: answer, format: :js }
+        expect(response).to render_template :set_best
       end
     end
 
     context 'NOT an author of the question' do
-      it 'tries to select the best answer'
+      let(:other_user) { create(:user) }
+      before { login(other_user) }
 
-      it 'renders ranked answers'
+      it 'tries to select the best answer' do
+        post :set_best, params: { id: answer, format: :js }
+        answer.reload
+        expect(answer.best).to be false
+      end
+
+      it 'renders ranked answers' do
+        post :set_best, params: { id: answer, format: :js }
+        expect(response).to render_template :set_best
+      end
     end
   end
 end
