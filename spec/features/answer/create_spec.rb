@@ -7,9 +7,9 @@ feature 'User can create answer', %q{
 } do
 
   given(:user) { create(:user) }
-  given(:question) { create(:question, author: user) }
+  given!(:question) { create(:question, author: user) }
 
-  describe 'Authenticated user' do
+  describe 'Authenticated user', js: true do
     background do
       sign_in(user)
       visit question_path(question)
@@ -18,11 +18,11 @@ feature 'User can create answer', %q{
     scenario 'tries to answer the question on the same page with the question' do
       fill_in 'Body', with: 'text text text'
       click_on 'Create Answer'
-      save_and_open_page
 
-      expect(page).to have_content question.title
-      expect(page).to have_content question.body
-      expect(page).to have_content 'text text text'
+      within '.answers' do
+        expect(page).to have_content 'text text text'
+      end
+      expect(current_path).to eq question_path(question)
     end
 
     scenario 'tries to answer the question with blank' do

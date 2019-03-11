@@ -30,6 +30,18 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def edit; end
+
+  def update
+    return head :forbidden unless current_user.author_of?(question)
+
+    if question.update(question_params)
+      redirect_to question, notice: 'Your question was successfully edited'
+    else
+      render :edit
+    end
+  end
+
   private
 
   def question

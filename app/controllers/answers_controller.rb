@@ -5,33 +5,24 @@ class AnswersController < ApplicationController
 
   def create
     @answer = current_user.answers.create(answer_params.merge(question_id: question.id))
-    if @answer.save
-      redirect_to question, notice: 'Your answer was successfully added.'
-    else
-      render 'questions/show'
-    end
   end
 
   def destroy
     return head :forbidden unless current_user.author_of?(answer)
 
-    if answer.destroy
-      redirect_to answer.question, notice: 'Your answer was successfully deleted.'
-    else
-      render 'questions/show', notice: 'Something went wrong - answer was not deleted. Try again.'
-    end
+    answer.destroy
   end
 
   def edit; end
 
   def update
-    return unless current_user.author_of?(answer)
+    return head :forbidden unless current_user.author_of?(answer)
 
-    if answer.update(answer_params)
-      redirect_to answer.question
-    else
-      render 'questions/show'
-    end
+    answer.update(answer_params)
+  end
+
+  def set_best
+    answer.rate_best if current_user.author_of?(answer.question)
   end
 
   private
