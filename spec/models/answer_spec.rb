@@ -26,12 +26,12 @@ RSpec.describe Answer, type: :model do
 
     it 'sets answer as the best' do
       answer2.rate_best
-      expect(answer2.best).to be true
+      expect(answer2).to be_best
     end
 
     it 'justifies where is only one best answer' do
       answer.rate_best
-      expect(answer.best).to be true
+      expect(answer).to be_best
       expect(answer2.best).to be false
     end
   end

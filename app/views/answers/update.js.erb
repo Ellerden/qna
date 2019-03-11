@@ -1,4 +1,4 @@
 $('.answer-edit-errors').html('<%= render 'shared/errors', resource: answer %>');
 <% unless answer.errors.present? %>
-  $('.answers').find('.answer_<%= answer.id %>').html('<%= j render answer %>');
+  $('.answers').first('.answer_<%= answer.id %>').html('<%= j render answer %>');
 <% end %>
