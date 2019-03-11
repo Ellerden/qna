@@ -12,4 +12,4 @@ h2 Answers:
 .answer-edit-errors
 .answers
   - if question.answers.any?
-      = render question.answers
+      = render question.answers.sort_by_best

@@ -21,6 +21,10 @@ class AnswersController < ApplicationController
     answer.update(answer_params)
   end
 
+  def set_best
+    answer.rate_best if current_user.author_of?(answer.question)
+  end
+
   private
 
   def question
