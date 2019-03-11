@@ -65,10 +65,9 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'PATCH #update' do
     let!(:answer) { create(:answer, question: question, author: user) }
+    before { login(user) }
 
-    context 'with valid attributes' do
-      before { login(user) }
-      
+    context 'Author with valid attributes' do
       it 'changes answer attributes' do
         patch :update, params: { id: answer, answer: { body: 'new body'}, format: :js }
         answer.reload
@@ -81,16 +80,27 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    context 'with invalid attributes' do
+    context 'Author with invalid attributes' do
       it 'does not change answer attributes' do
         expect do
-          patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid, format: :js) }
+          patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
         end.to_not change(answer, :body)
       end
 
       it 'renders update view' do
-        patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid, format: :js) }
+        patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
         expect(response).to render_template :update
+      end
+    end
+
+    context 'NOT an author tries to update the answer' do
+      let(:other_user) { create(:user) }
+      before { login(other_user) }
+ 
+      it 'cannot change answer attributes' do
+        patch :update, params: { id: answer, answer: { body: 'new body'}, format: :js }
+        answer.reload
+        expect(answer.body).not_to eq 'new body'
       end
     end
   end
