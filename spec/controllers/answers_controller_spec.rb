@@ -67,6 +67,8 @@ RSpec.describe AnswersController, type: :controller do
     let!(:answer) { create(:answer, question: question, author: user) }
 
     context 'with valid attributes' do
+      before { login(user) }
+      
       it 'changes answer attributes' do
         patch :update, params: { id: answer, answer: { body: 'new body'}, format: :js }
         answer.reload
