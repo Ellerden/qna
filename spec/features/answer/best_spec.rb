@@ -14,12 +14,12 @@ feature 'User can choose the best answer', %q{
         background do
           sign_in user
           visit question_path(question)
-          sleep(2)
         end
 
         scenario 'selects only one best answer and sees it at the top' do
           best_answer = answers[2]
           within(".answer_#{best_answer.id}") { click_on 'Best' }
+          wait_for_ajax
           first_answer = find('.answers').first(:element)
 
           within first_answer do
