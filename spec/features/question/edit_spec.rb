@@ -20,11 +20,10 @@ feature 'User can edit his question', %q{
       background do
         sign_in user
         visit question_path(question)
+        click_on 'Edit'
       end
 
       scenario 'edits his/her question' do
-        click_on 'Edit'
-
         fill_in 'Title', with: 'edited title'
         fill_in 'Body', with: 'edited body'
         click_on 'Ask'
@@ -39,14 +38,20 @@ feature 'User can edit his question', %q{
       end
 
       scenario 'edits his/her question with errors' do
-        click_on 'Edit'
-
         fill_in 'Title', with: ''
         fill_in 'Body', with: ''
         click_on 'Ask'
 
         expect(page).to have_content "Title can't be blank"
         expect(page).to have_content "Body can't be blank"
+      end
+
+      scenario 'adds missing files to the question' do
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Ask'
+
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
       end
     end
 
