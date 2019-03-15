@@ -8,7 +8,7 @@ feature 'User can delete links from answer', %q{
   given(:question) { create(:question, author: user) }
   given!(:link) { create :link, linkable: question, name: 'google', url: 'http://google.com' }
 
-  context 'Author of the answer', js: true do
+  describe 'Author of the answer', js: true do
     background do
       sign_in(user)
       visit edit_question_path(question)
@@ -23,7 +23,7 @@ feature 'User can delete links from answer', %q{
     end
   end
 
-  context 'NOT author of the answer' do
+  describe 'NOT author of the answer' do
     given(:other_user) { create(:user) }
 
     background do
