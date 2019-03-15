@@ -4,12 +4,19 @@ h2 Question #{question.id}
     b = question.title
   p = question.body
 
+  .files
   -if question.files.attached?
     - question.files.each do |file|
       . class="file_#{file.id}"
         p= link_to file.filename.to_s, url_for(file), target: :blank
         - if current_user&.author_of?(question)
           p= link_to 'Delete File', file_path(file.id), method: :delete, remote: true
+  
+  .links
+    p Links:
+    ul
+      - question.links.each do |link|
+        li= link_to link.name, link.url
 
   - if current_user&.author_of?(question)
     h3 Actions with the question

@@ -13,7 +13,8 @@ class AnswersController < ApplicationController
     answer.destroy
   end
 
-  def edit; end
+  def edit
+  end
 
   def update
     return head :forbidden unless current_user.author_of?(answer)
@@ -38,6 +39,6 @@ class AnswersController < ApplicationController
   helper_method :answer, :question
 
   def answer_params
-    params.require(:answer).permit(:body, files: [])
+    params.require(:answer).permit(:body, files: [], links_attributes: [:id, :name, :url, :_destroy])
   end
 end

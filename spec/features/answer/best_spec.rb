@@ -13,6 +13,7 @@ feature 'User can choose the best answer', %q{
       context 'As an author of the question' do
         background do
           sign_in user
+          wait_for_ajax
           visit question_path(question)
         end
 
