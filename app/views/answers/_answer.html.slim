@@ -11,7 +11,6 @@
         . class="link_#{link.id}"
           li
             = link_to link.name, link.url
-            //= link_to_remove_association "Delete link", link
 
   -if answer.files.attached?
     - answer.files.each do |file|
@@ -23,17 +22,17 @@
     =< link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
     = link_to 'Delete', answer_path(answer), method: :delete, remote: true
 
-  = form_with(model: answer, class: 'hidden', remote: true, html: { id: "edit-answer-#{answer.id}" } ) do |f|
-    = f.label :body
-    = f.text_area :body
-    = f.label :files
-    = f.file_field :files, multiple: true, direct_upload: true
+    = form_with(model: answer, class: 'hidden', remote: true, html: { id: "edit-answer-#{answer.id}" } ) do |f|
+      = f.label :body
+      = f.text_area :body
+      = f.label :files
+      = f.file_field :files, multiple: true, direct_upload: true
 
-    p Links:
-    #answer-links
-      = f.fields_for :links do |link|
-        = render 'partials/link_fields', f: link
-      .links
-        = link_to_add_association 'Add link', f, :links, partial: 'partials/link_fields'
+      p Links:
+      #answer-links
+        = f.fields_for :links do |link|
+          = render 'partials/link_fields', f: link
+        .links
+          = link_to_add_association 'Add link', f, :links, partial: 'partials/link_fields'
 
-    = f.submit 'Save'
+      = f.submit 'Save'

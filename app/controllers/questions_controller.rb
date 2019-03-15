@@ -37,7 +37,7 @@ class QuestionsController < ApplicationController
   end
 
   def edit
-    @question.links.new
+    question.links.new
   end
 
   def update
@@ -65,6 +65,5 @@ class QuestionsController < ApplicationController
   def question_params
     params.require(:question).permit(:title, :body, 
                                      files: [], links_attributes: [:id, :name, :url, :_destroy])
-
   end
 end
