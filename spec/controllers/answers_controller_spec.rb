@@ -96,7 +96,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'NOT an author tries to update the answer' do
       let(:other_user) { create(:user) }
       before { login(other_user) }
- 
+
       it 'cannot change answer attributes' do
         patch :update, params: { id: answer, answer: { body: 'new body'}, format: :js }
         answer.reload

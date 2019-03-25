@@ -17,4 +17,14 @@
     .links
       = link_to_add_association 'Add link', f, :links, partial: 'partials/link_fields'
 
+  p Award for best answer:
+  #question-awards
+    = f.fields_for :award do |award|
+      p
+        = award.label :name, 'Award name'
+        = award.text_field :name
+      p
+        = award.label :image
+        = award.file_field :image, direct_upload: true
+
   = f.submit 'Ask'

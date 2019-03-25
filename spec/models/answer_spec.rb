@@ -28,6 +28,7 @@ RSpec.describe Answer, type: :model do
   describe '#rate_best' do
     let(:user) { create(:user) }
     let!(:question) { create(:question, author: user) }
+    let!(:award) { create(:award, question: question, answer: answer2, user: user) }
     let!(:answer) { create(:answer, question: question, author: user) }
     let!(:answer2) { create(:answer, question: question, author: user) }
 
@@ -40,6 +41,12 @@ RSpec.describe Answer, type: :model do
       answer.rate_best
       expect(answer).to be_best
       expect(answer2.best).to be false
+    end
+
+    it 'presents the award' do
+      answer2.rate_best
+      expect(answer2.award).to be_present
+      expect(answer.award).to_not be_present
     end
   end
 end

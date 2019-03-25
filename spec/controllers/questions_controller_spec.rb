@@ -48,8 +48,12 @@ RSpec.describe QuestionsController, type: :controller do
       expect(response).to render_template :new
     end
 
-    it 'assigns a new Links to @links' do
+    it 'assigns new Links to @links' do
       expect(assigns(:question).links.first).to be_a_new(Link)
+    end
+
+    it 'assigns a new award to awards' do
+      expect(assigns(:question).award).to be_a_new(Award)
     end
   end
 

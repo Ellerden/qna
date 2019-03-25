@@ -34,6 +34,7 @@ feature 'User can choose the best answer', %q{
 
           within(".answer_#{best_answer.id}") { click_on 'Best' }
           within(".answer_#{new_best_answer.id}") { click_on 'Best' }
+          wait_for_ajax
 
           first_answer = find('.answers').first(:element)
 

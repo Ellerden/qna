@@ -45,7 +45,7 @@ feature 'User can add links to answer', %q{
       end
 
       click_on 'Create Answer'
-      expect(page).to have_content 'Links url is not a valid URL'
+      expect(page).to have_content 'Links url is an invalid URL'
     end
   end
 
