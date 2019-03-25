@@ -10,6 +10,8 @@
       - answer.links.each do |link|
         . class="link_#{link.id}"
           li
+            -if link.gist?
+              p= link.gist_content
             = link_to link.name, link.url
 
   -if answer.files.attached?

@@ -46,6 +46,9 @@ gem "aws-sdk-s3", require: false
 gem "cocoon"
 gem 'valid_url'
 
+# network
+gem "octokit", "~> 4.0"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
