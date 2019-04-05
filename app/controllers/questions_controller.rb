@@ -7,9 +7,15 @@ class QuestionsController < ApplicationController
     @questions = Question.all
   end
 
-  def show; end
+  def show
+    @answer = question.answers.build
+  end
 
-  def new; end
+  def new
+    @question = Question.new
+    @question.links.new
+    @question.award = Award.new
+  end
 
   def create
     @question = current_user.questions.build(question_params)
@@ -30,7 +36,9 @@ class QuestionsController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+    question.links.new
+  end
 
   def update
     return head :forbidden unless current_user.author_of?(question)
@@ -49,12 +57,15 @@ class QuestionsController < ApplicationController
   end
 
   def answer
-    @answer = question.answers.new
+    @answer = question.answers.build
   end
 
   helper_method :question, :answer
 
   def question_params
-    params.require(:question).permit(:title, :body, files: [])
+    params.require(:question).permit(:title, :body, 
+                                     files: [], 
+                                     links_attributes: [:id, :name, :url, :_destroy],
+                                     award_attributes: [:name, :image])
   end
 end

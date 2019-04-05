@@ -1,0 +1,7 @@
+h1 All awards
+- @awards.each do |award|
+  => award.name
+  img src=url_for(award.image) alt=award.name height="50" width="50"
+  h4 For question 
+  = award.question.title
+  br

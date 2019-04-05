@@ -13,6 +13,7 @@ feature 'User can choose the best answer', %q{
       context 'As an author of the question' do
         background do
           sign_in user
+          wait_for_ajax
           visit question_path(question)
         end
 
@@ -33,11 +34,27 @@ feature 'User can choose the best answer', %q{
 
           within(".answer_#{best_answer.id}") { click_on 'Best' }
           within(".answer_#{new_best_answer.id}") { click_on 'Best' }
+          wait_for_ajax
 
           first_answer = find('.answers').first(:element)
 
           within first_answer do
             expect(page).to have_content new_best_answer.body
+          end
+        end
+
+        given!(:award) { create(:award, question: question, answer: answers[2], user: user) }
+
+        scenario 'selects best answer and author gets a badge' do
+          best_answer = answers[2]
+          within(".answer_#{best_answer.id}") { click_on 'Best' }
+          wait_for_ajax
+
+          first_answer = find('.answers').first(:element)
+
+          within first_answer do
+            expect(page).to have_content best_answer.body
+            expect(page).to have_css("img[src*='badge.png']")
           end
         end
       end

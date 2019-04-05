@@ -4,17 +4,31 @@ h2 Question #{question.id}
     b = question.title
   p = question.body
 
+  .files
   -if question.files.attached?
     - question.files.each do |file|
       . class="file_#{file.id}"
         p= link_to file.filename.to_s, url_for(file), target: :blank
         - if current_user&.author_of?(question)
           p= link_to 'Delete File', file_path(file.id), method: :delete, remote: true
+  
+  .links
+    p Links:
+    ul
+      - question.links.each do |link|
+        li= link_to link.name, link.url
 
   - if current_user&.author_of?(question)
     h3 Actions with the question
     =< link_to 'Edit', edit_question_path
     =< link_to 'Delete', question_path(question), method: :delete
+
+    .badges
+      - if question.award.present?
+        h3 Award for best answer:
+        p
+          => question.award.name
+          img src=url_for(question.award.image) alt=question.award.name height="50" width="50"
 
 h2 Answers:
 .answer-edit-errors
