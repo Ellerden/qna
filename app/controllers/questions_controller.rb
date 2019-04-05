@@ -9,7 +9,6 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = question.answers.build
-    question.answers.each { |answer| answer.links.build }
   end
 
   def new

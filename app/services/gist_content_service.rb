@@ -1,5 +1,4 @@
 class GistContentService
-
   def initialize(gist, client: default_client)
     @gist = gist
     @client = client

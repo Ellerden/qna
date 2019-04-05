@@ -4,6 +4,10 @@
 
   = answer.body
 
+  - if answer.best?
+    .answer-award
+      img src=url_for(answer.award.image) alt=answer.award.name height="50" width="50"
+
   .links
     p Links:
     ul

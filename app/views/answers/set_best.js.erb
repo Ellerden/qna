@@ -1,4 +1,5 @@
 $('.answer-errors').html('<%= render 'shared/errors', resource: answer %>');
 $('.answer_<%= answer.id %>').remove();
+// delete best badge from previous best answer
+$('.answers').find('.answer-award').remove();
 $('.answers').prepend('<%= j render answer %>');
-
