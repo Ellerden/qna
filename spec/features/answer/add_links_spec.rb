@@ -19,29 +19,30 @@ feature 'User can add links to answer', %q{
 
     scenario 'adds VALID several links when leaves an answer' do
       within('#answer-links') do
-        fill_in 'Link name', with: 'My gist'
-        fill_in 'Url', with: gist_url
         click_on 'Add link'
         wait_for_ajax
+        fill_in 'Link name', with: 'Gist1'
+        fill_in 'Url', with: gist_url
+        click_on 'Add link'
       end
 
       within all(".nested-fields")[1] do
-        fill_in 'Link name', with: 'My gist2'
+        fill_in 'Link name', with: 'Gist2'
         fill_in 'Url', with: gist_url2
       end
 
       click_on 'Create Answer'
       within '.answers' do
-        expect(page).to have_link 'My gist', href: gist_url
-        expect(page).to have_link 'My gist2', href: gist_url2
+        expect(page).to have_link 'Gist1', href: gist_url
+        expect(page).to have_link 'Gist2', href: gist_url2
       end
     end
 
     scenario 'adds INVALID URL to a link when leaves an answer' do
       within('#answer-links') do
+        click_on 'Add link'
         fill_in 'Link name', with: 'My gist'
         fill_in 'Url', with: 'not_a_link'
-        click_on 'Add link'
       end
 
       click_on 'Create Answer'

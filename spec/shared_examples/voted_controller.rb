@@ -1,17 +1,12 @@
 require 'rails_helper'
 
 RSpec.shared_examples_for "voted" do
-  let(:user) { create(:user) }
-  let(:resource) { create(:question, author: user) }
+  # let(:user) { create(:user) }
+  #let(:user) { create(:user) }
+  #let(:resource) { create(:question, author: user) }
+
   describe '#POST upvote' do
-
-
-    # let(:model) { described_class }
-    # let(:user) { create(:user) }
-    # let(:resource) { create(model.to_s.underscore.to_sym, author: user) }
-
     context 'Authenticated user' do
-      # let(:user) { create(:user) }
       let(:user2) { create(:user) }
 
       before { login(user2) }
@@ -39,7 +34,6 @@ RSpec.shared_examples_for "voted" do
 
   describe '#POST downvote' do
     context 'Authenticated user' do
-      # let(:user) { create(:user) }
       let(:user2) { create(:user) }
 
       before { login(user2) }
@@ -64,14 +58,4 @@ RSpec.shared_examples_for "voted" do
       end
     end
   end
-
-  #   def upvote
-  #   used_as_cancelation?(:up) ? vote(:cancel) : vote(:up)
-  # end
-
-  # def downvote
-  #   used_as_cancelation?(:down) ? vote(:cancel) : vote(:down)
-  # end
-
-
 end
