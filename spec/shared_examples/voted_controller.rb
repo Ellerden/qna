@@ -6,9 +6,9 @@ RSpec.shared_examples_for "voted" do
   #let(:resource) { create(:question, author: user) }
 
   describe '#POST upvote' do
+    let(:user2) { create(:user) }
+    
     context 'Authenticated user' do
-      let(:user2) { create(:user) }
-
       before { login(user2) }
 
       it 'tries to vote up for someone elses resource (answer/question)' do
@@ -30,12 +30,19 @@ RSpec.shared_examples_for "voted" do
         expect(resource.score).to eq 0
       end
     end
+
+    it 'responce must be JSON' do
+      login(user2)
+      post :upvote, params: { id: resource }
+
+      expect(JSON.parse(response.body)['score']).to eq resource.score
+    end
   end
 
   describe '#POST downvote' do
-    context 'Authenticated user' do
-      let(:user2) { create(:user) }
+    let(:user2) { create(:user) }
 
+    context 'Authenticated user' do
       before { login(user2) }
 
       it 'tries to vote down for someone elses resource (answer/question)' do
@@ -56,6 +63,13 @@ RSpec.shared_examples_for "voted" do
         post :downvote, params: { id: resource }
         expect(resource.score).to eq 0
       end
+    end
+
+    it 'responce must be JSON' do
+      login(user2)
+      post :downvote, params: { id: resource }
+
+      expect(JSON.parse(response.body)['score']).to eq resource.score
     end
   end
 end
