@@ -6,6 +6,11 @@ RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
   let(:question) { create(:question, author: user) }
 
+  it_behaves_like "voted" do 
+    let(:user) { create(:user) }
+    let!(:resource) { create(:question, author: user) } 
+  end
+
   describe 'GET #index' do
     let(:questions) { create_list(:question, 3, author: user) }
 
@@ -31,12 +36,8 @@ RSpec.describe QuestionsController, type: :controller do
       expect(response).to render_template :show
     end
 
-    it 'assigns am answer to @answer' do
+    it 'assigns an answer to @answer' do
       expect(assigns(:answer)).to be_a_new(Answer)
-    end
-
-    it 'assigns a new link for answer' do
-      expect(assigns(:answer).links.first).to be_a_new(Link)
     end
   end
 

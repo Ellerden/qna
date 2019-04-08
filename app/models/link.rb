@@ -3,7 +3,6 @@ class Link < ApplicationRecord
 
   validates :name, :url, presence: true
   validates :url, url: true
-  validates :url, url: true
 
   GIST_MASK = /^https:\/\/gist\.github\.com\/\w+\/\w+/i
 

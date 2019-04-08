@@ -49,4 +49,10 @@ RSpec.describe Answer, type: :model do
       expect(answer.award).to_not be_present
     end
   end
+
+  it_behaves_like "voteable" do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, author: user) }
+    let!(:resource) { create(:answer, question: question, author: user) }
+  end
 end

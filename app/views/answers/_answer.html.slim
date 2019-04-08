@@ -1,4 +1,7 @@
-. class="answer_#{answer.id}"
+. class="answer_#{answer.id}" data={ aid: answer.id }
+  .answer-vote
+    = render 'shared/votes', resource: answer
+
   - if current_user&.author_of?(answer.question)
     => link_to 'Best', set_best_answer_path(answer), method: :patch, remote: true, class: 'set-best-answer'
 
