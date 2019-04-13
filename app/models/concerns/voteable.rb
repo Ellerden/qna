@@ -9,11 +9,21 @@ module Voteable
     votes.sum(:value)
   end
 
-  def register_vote(user)
-    votes.create(user: user)
+  def upvote!(user)
+    votes.create(user: user, value: 1)
+  end
+
+  def downvote!(user)
+    votes.create(user: user, value: -1)
   end
 
   def cancel_votes(user)
     votes.where(user: user, voteable: self).delete_all
+  end
+
+  private
+
+  def register_vote(user)
+    votes.create(user: user)
   end
 end

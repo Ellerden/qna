@@ -15,15 +15,13 @@ feature "User can vote", %q{
 
     scenario 'tries to upvote an answer' do
       within ".answer_#{answer.id} .answer-vote" do
-        click_on '+'
-        expect(page).to have_content '0'
+        expect(page).not_to have_link '+'
       end
     end
 
     scenario 'tries to downvote an answer' do
       within ".answer_#{answer.id} .answer-vote" do
-        click_on '-'
-        expect(page).to have_content '0'
+        expect(page).not_to have_link '-'
       end
     end
 

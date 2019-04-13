@@ -1,13 +1,9 @@
 require 'rails_helper'
 
 RSpec.shared_examples_for "voted" do
-  # let(:user) { create(:user) }
-  #let(:user) { create(:user) }
-  #let(:resource) { create(:question, author: user) }
-
   describe '#POST upvote' do
     let(:user2) { create(:user) }
-    
+
     context 'Authenticated user' do
       before { login(user2) }
 

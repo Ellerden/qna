@@ -33,13 +33,12 @@ module Voted
   def vote(type)
     # в базе может быть только один предыдущий голос. (остальные удаляются, если были использованы для отмены)
     unless (current_user.voted_for?(@resource) && type != :cancel) || current_user.author_of?(@resource)
-      vote = @resource.register_vote(current_user)
 
       case type
       when :up
-        vote.upvote!
+        @resource.upvote!(current_user)
       when :down
-        vote.downvote!
+        @resource.downvote!(current_user)
       when :cancel
         @resource.cancel_votes(current_user)
       end

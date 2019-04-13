@@ -7,39 +7,45 @@ RSpec.shared_examples_for "voteable" do
 
   #let(:model) { described_class }
   #let(:resource) { create(model.to_s.underscore.to_sym, author: user) }
-  let(:vote) { create :vote, user: user, voteable: resource }
-  let(:vote2) { create :vote, user: user2, voteable: resource }
+  # let(:vote) { create :vote, user: user, voteable: resource }
 
   describe '#score' do
     it 'User can upvote a resource - score 1' do
-      vote.upvote!
+      resource.upvote!(user)
       expect(resource.score).to eq 1
     end
 
     it 'User can downvote a resource - score -1' do
-      vote.downvote!
+      resource.downvote!(user)
       expect(resource.score).to eq(-1)
     end
 
     it 'One user upvotes, one downvotes a resource - score 0' do
-      vote.upvote!
-      vote2.downvote!
+      resource.upvote!(user)
+      resource.downvote!(user)
       expect(resource.score).to eq 0
     end
   end
 
-  describe '#register_vote(user)' do
-    let(:user3) { create(:user) }
+  describe '#upvote' do
+    it 'User can increase a resource score by 1' do
+      resource.upvote!(user)
+      expect(resource.score).to eq 1
+      expect(resource.downvote!(user)).to be_an_instance_of Vote
+    end
+  end
 
-    it 'User creates a vote' do
-      expect(resource.register_vote(user3).user).to eq user3
-      expect(resource.register_vote(user3)).to be_an_instance_of Vote
+  describe '#downvote' do
+    it 'User can descrease a resource score by 1' do
+      resource.downvote!(user)
+      expect(resource.score).to eq -1
+      expect(resource.downvote!(user)).to be_an_instance_of Vote
     end
   end
 
   describe '#cancel_votes(user)' do
     before do
-      vote.upvote!
+      resource.upvote!(user)
       resource.cancel_votes(user)
     end
 

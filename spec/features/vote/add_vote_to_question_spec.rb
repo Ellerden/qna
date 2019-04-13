@@ -14,15 +14,13 @@ feature "User can vote", %q{
 
     scenario 'tries to upvote a question' do
       within '.question-vote' do
-        click_on '+'
-        expect(page).to have_content '0'
+        expect(page).not_to have_link '+'
       end
     end
 
     scenario 'tries to downvote a question' do
       within '.question-vote' do
-        click_on '-'
-        expect(page).to have_content '0'
+        expect(page).not_to have_link '-'
       end
     end
 
