@@ -45,6 +45,7 @@ gem 'jquery-rails'
 gem "aws-sdk-s3", require: false
 gem "cocoon"
 gem 'valid_url'
+gem 'skim'
 
 # network
 gem "octokit", "~> 4.0"

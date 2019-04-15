@@ -55,6 +55,34 @@ feature 'User can create question', %q{
       expect(page).to have_content 'Award for courage'
       expect(page).to have_css("img[src*='badge.png']")
     end
+
+    fcontext 'multiple sessions' do
+      scenario 'question appears on another users page' do
+        Capybara.using_session('user') do
+          sign_in(user)
+          visit questions_path
+        end
+
+        Capybara.using_session('guest') do
+          visit questions_path
+        end
+
+        Capybara.using_session('user') do
+          click_on 'Ask question'
+          fill_in 'Title', with: 'Test question'
+          fill_in 'Body', with: 'text text text'
+          click_on 'Ask'
+
+          expect(page).to have_content 'Your question was successfully created.'
+          expect(page).to have_content 'Test question'
+          expect(page).to have_content 'text text text'
+        end
+
+        Capybara.using_session('guest') do
+          expect(page).to have_content 'Test question'
+        end
+      end
+    end
   end
 
   describe 'Unauthenticated user' do
