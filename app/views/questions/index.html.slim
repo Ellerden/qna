@@ -3,6 +3,4 @@ p= link_to 'Ask question', new_question_path
 .questions-list
 
   - @questions.each do |question|
-    .question-item
-      = link_to question.title, question_path(question)
-      br
+    = render 'title', question: question

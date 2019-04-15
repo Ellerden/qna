@@ -58,16 +58,18 @@ feature 'User can create question', %q{
 
     fcontext 'multiple sessions' do
       scenario 'question appears on another users page' do
+        # Capybara.using_session('user') do
+        #   sign_in(user)
+        #   visit questions_path
+        # end
+
+        # Capybara.using_session('guest') do
+        #   visit questions_path
+        # end
+
         Capybara.using_session('user') do
           sign_in(user)
           visit questions_path
-        end
-
-        Capybara.using_session('guest') do
-          visit questions_path
-        end
-
-        Capybara.using_session('user') do
           click_on 'Ask question'
           fill_in 'Title', with: 'Test question'
           fill_in 'Body', with: 'text text text'
@@ -79,6 +81,7 @@ feature 'User can create question', %q{
         end
 
         Capybara.using_session('guest') do
+          visit questions_path
           expect(page).to have_content 'Test question'
         end
       end
