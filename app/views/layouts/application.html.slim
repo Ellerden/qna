@@ -4,10 +4,10 @@ html
     meta charset="utf-8"
     title QnA
     = csrf_meta_tags
-    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
-    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = Gon::Base.render_data({})
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
     = action_cable_meta_tag
-    //= include_gon
   body
     = render 'shared/nav'
     p class="notice" = notice

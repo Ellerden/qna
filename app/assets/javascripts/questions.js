@@ -4,15 +4,13 @@ $(document).on('turbolinks:load', function(){
     e.preventDefault();
     $('.question-vote').find('.score').text(score);
   });
-// });
 
 App.cable.subscriptions.create('QuestionsChannel', {
     connected: function() {
-      console.log('connected');
+      console.log('Question connected');
       this.perform('follow');
     },
     received: function(data) {
-      console.log(data);
       $('.questions-list').append(data);
     }
   });

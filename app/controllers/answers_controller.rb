@@ -4,6 +4,9 @@ class AnswersController < ApplicationController
   include Voted
 
   before_action :authenticate_user!
+  #before_action :set_gon_variables, only: [:create]
+  after_action :publish_answer, only: [:create]
+  #after_action :set_gon_variables, only: [:create]
 
   def create
     @answer = current_user.answers.create(answer_params.merge(question_id: question.id))
@@ -43,4 +46,21 @@ class AnswersController < ApplicationController
   def answer_params
     params.require(:answer).permit(:body, files: [], links_attributes: [:id, :name, :url, :_destroy])
   end
+
+  def publish_answer
+    return if @answer.errors.any?
+    #data = render_to_string(template: 'answers/_answer.json.jbuilder')
+    AnswersChannel.broadcast_to(
+      question,
+      ApplicationController.render(
+          partial: 'answers/answer.json.jbuilder',
+          locals: { answer: @answer }
+        )
+    )
+  end
+
+#   def set_gon_variables
+# #    gon.question_id = question.id
+#     gon.signed_in_user = user_signed_in?
+#   end
 end

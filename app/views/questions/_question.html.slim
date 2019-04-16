@@ -1,5 +1,5 @@
 h2 Question #{question.id}
-.question
+.question data={ qid: question.id }
   .question-vote
     = render 'shared/votes', resource: question
   
