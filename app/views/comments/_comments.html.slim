@@ -1,0 +1,12 @@
+.comment-errors
+.comments
+  = render resource.comments
+
+- if current_user
+  .comment-form
+    = form_with(model: [resource, Comment.new], class: 'new-comment', remote: true) do |f|
+      p
+        = f.label :body, 'Your comment'
+        =< f.text_area :body
+      p
+        = f.submit

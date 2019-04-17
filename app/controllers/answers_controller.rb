@@ -4,9 +4,7 @@ class AnswersController < ApplicationController
   include Voted
 
   before_action :authenticate_user!
-  #before_action :set_gon_variables, only: [:create]
   after_action :publish_answer, only: [:create]
-  #after_action :set_gon_variables, only: [:create]
 
   def create
     @answer = current_user.answers.create(answer_params.merge(question_id: question.id))
@@ -14,7 +12,6 @@ class AnswersController < ApplicationController
 
   def destroy
     return head :forbidden unless current_user.author_of?(answer)
-
     answer.destroy
   end
 
@@ -23,7 +20,6 @@ class AnswersController < ApplicationController
 
   def update
     return head :forbidden unless current_user.author_of?(answer)
-
     answer.update(answer_params)
   end
 
@@ -49,7 +45,6 @@ class AnswersController < ApplicationController
 
   def publish_answer
     return if @answer.errors.any?
-    #data = render_to_string(template: 'answers/_answer.json.jbuilder')
     AnswersChannel.broadcast_to(
       question,
       ApplicationController.render(
@@ -58,9 +53,4 @@ class AnswersController < ApplicationController
         )
     )
   end
-
-#   def set_gon_variables
-# #    gon.question_id = question.id
-#     gon.signed_in_user = user_signed_in?
-#   end
 end

@@ -13,6 +13,7 @@ feature 'User can add links to answer', %q{
   describe 'Author of the answer', js: true do
     background do
       sign_in(user)
+      wait_for_ajax
       visit question_path(question)
       fill_in 'Body', with: 'text text text'
     end

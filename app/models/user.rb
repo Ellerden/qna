@@ -8,6 +8,8 @@ class User < ApplicationRecord
                            dependent: :destroy
   has_many :answers, class_name: 'Answer', foreign_key: :author_id,
                            dependent: :destroy
+  has_many :comments, class_name: 'Comment', foreign_key: :author_id,
+                           dependent: :destroy            
   has_many :awards
   has_many :votes
 
