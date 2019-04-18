@@ -26,3 +26,8 @@ div class=answerClass
     - for file in @answer.files
       div
         a href="#{file.url}" target='blank' = file.filename
+
+  .comments
+    - for comment in @answer.comments
+      div
+        p= comment

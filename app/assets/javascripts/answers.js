@@ -4,7 +4,7 @@ $(document).on('turbolinks:load', function(){
        $(this).hide();
        var answerId = $(this).data('answerId');
        $('form#edit-answer-' + answerId).removeClass('hidden');
-  })
+  });
 
   $('.answer-vote').on('ajax:success', function(e, xhr) {
     e.preventDefault();
@@ -22,11 +22,9 @@ $(document).on('turbolinks:load', function(){
     },
     received: function(data) {
       var answer = $.parseJSON(data);
-      console.log(answer);
       // ЕСЛИ ЮЗЕР ЗАЛОГИНЕН И АВТОР - показываем js как было до этого, со всеми edit и delete
       if (gon.signed_in_user && (gon.current_user_id == answer.author_id)) return;
       
-      console.log('GOGGG!');
       $('.answers').append(JST["templates/answer"]({ answer: answer })); 
     }
   });

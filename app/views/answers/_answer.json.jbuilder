@@ -11,6 +11,12 @@ json.links answer.links do |link|
   json.url link.url
 end
 
+json.comments answer.comments do |comment|
+  json.id comment.id
+  json.body comment.body
+  json.author comment.author
+end
+
 # json.votes answer.votes do |vote|
 #   json.id vote.id
 #   json.score vote.score

@@ -28,12 +28,11 @@ feature 'User can comment question or answer ', %q{
     scenario 'tries to leave blank comment to the question' do
       within '.question' do
         click_on 'Create Comment'
-
-        expect(page).to have_content "Body can't be blank"
       end
+        expect(page).to have_content "Body can't be blank"
     end
 
-    fcontext 'multiple sessions' do
+    context 'multiple sessions' do
       scenario 'comment appears on another users page' do
         Capybara.using_session('guest') do
           visit question_path(question)

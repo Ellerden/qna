@@ -1,0 +1,4 @@
+- commentClass = "comment_#{@comment.id}"
+
+div class=commentClass
+  p= @comment.body
