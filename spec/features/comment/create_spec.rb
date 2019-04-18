@@ -32,6 +32,31 @@ feature 'User can comment question or answer ', %q{
         expect(page).to have_content "Body can't be blank"
       end
     end
+
+    fcontext 'multiple sessions' do
+      scenario 'comment appears on another users page' do
+        Capybara.using_session('guest') do
+          visit question_path(question)
+        end
+
+        Capybara.using_session('user') do
+          sign_in(user)
+          visit question_path(question)
+          fill_in 'Your comment', with: 'text text text'
+          click_on 'Create Comment'
+
+          within '.question' do
+            expect(page).to have_content 'text text text'
+          end
+        end
+
+        Capybara.using_session('guest') do
+          within '.question' do 
+            expect(page).to have_content 'text text text'
+          end
+        end
+      end
+    end
   end
 
   scenario 'Unauthenticated user tries to leave comment to the question' do

@@ -48,14 +48,13 @@ feature 'User can create answer', %q{
         #   visit questions_path
         # end
 
-        # Capybara.using_session('guest') do
-        #   visit questions_path
-        # end
+        Capybara.using_session('guest') do
+          visit question_path(question)
+        end
 
         Capybara.using_session('user') do
           sign_in(user)
           visit question_path(question)
-          save_and_open_page
           fill_in 'Body', with: 'text text text'
           click_on 'Create Answer'
 
@@ -65,7 +64,6 @@ feature 'User can create answer', %q{
         end
 
         Capybara.using_session('guest') do
-          visit question_path(question)
           within '.answers' do
             expect(page).to have_content 'text text text'
           end
