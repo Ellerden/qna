@@ -17,7 +17,6 @@ $(document).on('turbolinks:load', function(){
     connected: function() {
       console.log('Answer connected');
       var questionId = gon.question_id;
-      //var questionId = $('.question').data('qid');
       this.perform('follow', { id: questionId });
     },
     received: function(data) {
