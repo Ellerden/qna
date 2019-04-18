@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   devise_for :users
   root 'questions#index'
 
+  mount ActionCable.server => '/cable'
+
   concern :voteable do
     member do
       post :upvote
@@ -11,8 +13,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :questions, concerns: [:voteable] do
-    resources :answers, concerns: [:voteable], shallow: true, except: %i[show index new] do
+  concern :commentable do
+    resources :comments, only: %i[create destroy]
+  end
+
+  resources :questions, concerns: [:voteable, :commentable] do
+    resources :answers, concerns: [:voteable, :commentable], shallow: true, except: %i[show index new] do
       patch 'set_best', on: :member
     end
   end

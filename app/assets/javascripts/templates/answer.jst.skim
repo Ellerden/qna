@@ -1,0 +1,33 @@
+- answerClass = "answer_#{@answer.id}"
+
+div class=answerClass
+  .answer-vote
+    p= 0
+    - if (gon.current_user && @answer.author_id != gon.current_user_id)
+      a.upvote-btn data-remote='true' data-method='post' data-type='json' href='/answers/#{@answer.id}/upvote' +
+      a.downvote-btn data-remote='true' data-method='post' data-type='json' href='/answers/#{@answer.id}/downvote' -
+
+  - if (gon.current_user && @answer.author_id != gon.current_user_id)
+    a.set-best-answer data-remote='true' data-method='patch' href='/answers/#{@answer.id}/set_best/' Best 
+  
+  = @answer.body
+
+  .links
+    p Links:
+    ul
+      - for link in @answer.links
+        li class="link_#{link.id}"
+          p
+            a href="#{link.ur;}" = link.name
+          - if link.gist?
+            p= link.gist_content
+            
+  .files
+    - for file in @answer.files
+      div
+        a href="#{file.url}" target='blank' = file.filename
+
+  .comments
+    - for comment in @answer.comments
+      div
+        p= comment

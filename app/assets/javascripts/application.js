@@ -14,5 +14,10 @@
 //= require turbolinks
 //= require jquery3
 //= require jquery_ujs
+//= require action_cable
+//= require skim
 //= require cocoon
 //= require_tree .
+
+var App = App || {};
+App.cable = ActionCable.createConsumer();
