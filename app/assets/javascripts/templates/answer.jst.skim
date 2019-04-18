@@ -3,11 +3,11 @@
 div class=answerClass
   .answer-vote
     p= 0
-    - if (gon.signed_in_user && @answer.author_id != gon.current_user_id)
+    - if (gon.current_user && @answer.author_id != gon.current_user_id)
       a.upvote-btn data-remote='true' data-method='post' data-type='json' href='/answers/#{@answer.id}/upvote' +
       a.downvote-btn data-remote='true' data-method='post' data-type='json' href='/answers/#{@answer.id}/downvote' -
 
-  - if (gon.signed_in_user && @answer.author_id != gon.current_user_id)
+  - if (gon.current_user && @answer.author_id != gon.current_user_id)
     a.set-best-answer data-remote='true' data-method='patch' href='/answers/#{@answer.id}/set_best/' Best 
   
   = @answer.body

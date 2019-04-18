@@ -8,7 +8,7 @@ $(document).on('turbolinks:load', function(){
 
     received: function(data) {
       var comment = $.parseJSON(data['comment'])
-      if (gon.signed_in_user && (gon.current_user_id == comment.author_id)) return;
+      if (gon.current_user && (gon.current_user_id == comment.author_id)) return;
 
       var resourceDiv = comment.commentable_type == "Question" ? "question" : "answer_" + comment.commentable_id;
       $('.' + resourceDiv + ' .comments').append(JST["templates/comment"]({ comment: comment })); 

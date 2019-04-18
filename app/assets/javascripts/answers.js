@@ -22,7 +22,7 @@ $(document).on('turbolinks:load', function(){
     received: function(data) {
       var answer = $.parseJSON(data);
       // ЕСЛИ ЮЗЕР ЗАЛОГИНЕН И АВТОР - показываем js как было до этого, со всеми edit и delete
-      if (gon.signed_in_user && (gon.current_user_id == answer.author_id)) return;
+      if (gon.current_user && (gon.current_user_id == answer.author_id)) return;
       
       $('.answers').append(JST["templates/answer"]({ answer: answer })); 
     }

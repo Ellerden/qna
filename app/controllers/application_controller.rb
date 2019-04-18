@@ -13,7 +13,6 @@ class ApplicationController < ActionController::Base
   private
 
   def set_gon_variables
-    gon.current_user_id = current_user.id if current_user
-    gon.signed_in_user = user_signed_in?
+    gon.current_user_id = current_user&.id
   end
 end
