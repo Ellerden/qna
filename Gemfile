@@ -49,6 +49,8 @@ gem 'skim'
 gem 'gon'
 gem 'omniauth'
 gem 'omniauth-github'
+gem 'omniauth-facebook'
+gem 'omniauth-vkontakte'
 
 # network
 gem "octokit", "~> 4.0"
