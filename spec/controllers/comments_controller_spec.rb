@@ -52,8 +52,3 @@ RSpec.describe CommentsController, type: :controller do
     end
   end
 end
-
-  # def destroy
-  #   @comment.destroy if current_user.author_of?(comment)
-  # end
-

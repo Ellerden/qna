@@ -47,6 +47,8 @@ gem "cocoon"
 gem 'valid_url'
 gem 'skim'
 gem 'gon'
+gem 'omniauth'
+gem 'omniauth-github'
 
 # network
 gem "octokit", "~> 4.0"
