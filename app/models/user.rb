@@ -3,7 +3,8 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, 
-         :omniauthable, omniauth_providers: [:github]
+         :confirmable, 
+         :omniauthable, omniauth_providers: %i[github facebook vkontakte]
 
   has_many :questions, class_name: 'Question', foreign_key: :author_id,
                            dependent: :destroy
@@ -31,5 +32,17 @@ class User < ApplicationRecord
 
   def self.find_for_oauth(auth)
     FindForOauthService.new(auth).call
+  end
+
+  def self.find_or_init_skip_confirmation(email)
+    password = Devise.friendly_token[0, 20]
+    user = User.find_or_initialize_by(email: email) do |u|
+      u.password = password
+      u.password_confirmation = password
+    end
+
+    user.skip_confirmation!
+    user.save
+    user
   end
 end
