@@ -25,6 +25,14 @@ require 'rspec/rails'
 Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
 Dir[Rails.root.join('spec', 'shared_examples', '**', '*.rb')].each { |f| require f }
 
+# OmniAuth.config.test_mode = true
+# omniauth_hash = { 'provider' => 'github',
+#                       'uid' => '12345',
+#                       'info' => { 'email' => 'ellerden@gmail.com' }
+#                 }
+ 
+# OmniAuth.config.add_mock(:github, omniauth_hash)
+
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
 begin
@@ -72,7 +80,11 @@ RSpec.configure do |config|
   config.after(:all) do
     FileUtils.rm_rf("#{Rails.root}/tmp/storage")
   end
+
+  config.include OmniauthMacros
 end
+
+OmniAuth.config.test_mode = true
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|

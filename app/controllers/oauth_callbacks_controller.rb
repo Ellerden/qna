@@ -23,17 +23,16 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def confirm_email
-    pending_user = User.find_or_init_skip_confirmation(params[:email])
-    if pending_user 
+    begin
+      pending_user = User.find_or_init_skip_confirmation(params[:email])
       aut = pending_user.authorizations.create!(provider: session[:auth]['provider'], uid: session[:auth]['uid'], 
-                                                linked_email: params[:email], confirmation_token: Devise.friendly_token[0, 20],
-                                                confirmation_sent_at: Time.now)
-      
+                                                  linked_email: params[:email], confirmation_token: Devise.friendly_token[0, 20],
+                                                  confirmation_sent_at: Time.now)
       OauthMailer.send_confirmation_letter(aut).deliver_now
       redirect_to root_path, notice: "Great! Now confirm your email, we've sent you a letter!"
-    else
-      render 'omniauth_callbacks/confirm_email', alert: "We couldn't verify your email, please try again later"
-    end 
+    rescue Exception => e
+      redirect_to root_path, alert: "Something went wrong: #{e.message}"
+    end
   end
 
   private
@@ -44,7 +43,7 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
     #Если у нас уже была такая авторизация без e-mail и мы все записали в базу или это первая авторизация без и-мейла
     unless @user || has_email?
       session[:auth] = { uid: request.env['omniauth.auth']['uid'], provider: request.env['omniauth.auth']['provider'] }
-      render 'omniauth_callbacks/confirm_email', locals: { auth: Authorization.new }
+      render 'omniauth_callbacks/confirm_email'
     end
 
     if @user&.persisted?

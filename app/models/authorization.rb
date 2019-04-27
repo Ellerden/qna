@@ -2,7 +2,7 @@ class Authorization < ApplicationRecord
   belongs_to :user
 
   validates :provider, :uid, presence: true
-  validates :uid, uniqueness: { scope: :provider }
+  validates :uid, uniqueness: { scope: [:provider, :linked_email] }
 
   def activate_email
     transaction do
