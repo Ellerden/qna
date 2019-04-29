@@ -6,7 +6,6 @@ feature 'User can sign in via social networks', %q{
   To promptly sign in and create questions/answers
 } do
   
-
   describe 'User signs in via Facebook' do
     context 'New user signs in using Facebook for the 1st time' do
       scenario 'No email confirmation needed' do
