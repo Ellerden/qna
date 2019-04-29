@@ -22,12 +22,10 @@ feature 'User can sign in via social networks', %q{
         scenario 'User does not provide email' do
           mock_auth_hash(:facebook, nil)
           visit new_user_session_path
-          expect(page).to have_content('Sign in with Facebook')
           click_on 'Sign in with Facebook'
           expect(page).to have_content("Seems like we don't have your email - enter it below to confirm and continue.")
           click_on 'Confirm Email'
-
-          expect(current_path).to eq root_path
+          expect(current_path).to eq request_email_path
         end
 
         scenario 'Email confirmed and user tries to log in via Facebook' do

@@ -18,11 +18,12 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
       authorization.activate_email 
       redirect_to new_user_session_path, notice: "Your account was succesfully verified. Now you can log in via #{authorization.provider.capitalize}"
     else
-      redirect_to new_user_session_path, alert: "#{params[:token]} ---- #{Authorization.first.confirmation_token} Sorry. Something went wrong, try confirming the mail again."
+      redirect_to new_user_session_path, alert: "Sorry. Something went wrong, try confirming the mail again."
     end
   end
 
   def confirm_email
+    puts params[:email]
     pending_user = User.find_or_init_skip_confirmation(params[:email])
     if pending_user
       aut = Authorization.where(provider: session[:auth]['provider'], uid: session[:auth]['uid'], linked_email: params[:email])
@@ -38,8 +39,6 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
       else
         redirect_to root_path, alert: "Something went wrong. Please try again later or use another sign in method"
       end
-    else
-      redirect_to root_path, alert: "USER NOT FOUND! "
     end
   end
 
@@ -48,7 +47,8 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
   def sign_in_via_provider(provider)
     @user = User.find_for_oauth(request.env['omniauth.auth'])
 
-    #Если у нас уже была такая авторизация без e-mail и мы все записали в базу или это первая авторизация без и-мейла
+    #Если это первая авторизация без email 
+    #(если уже не первая и все подтверждено - то связка есть в базе, поэтому мы нашли user)
     unless @user || has_email?
       session[:auth] = { uid: request.env['omniauth.auth']['uid'], provider: request.env['omniauth.auth']['provider'] }
       render 'omniauth_callbacks/confirm_email'

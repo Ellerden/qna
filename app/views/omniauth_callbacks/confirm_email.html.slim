@@ -1,6 +1,6 @@
 h2 One more step
 p Seems like we don't have your email - enter it below to confirm and continue. We won't bother you again, promise!
-= form_with(url: confirm_email_path, method: :post) do |f|
+= form_with(url: request_email_path, method: :post) do |f|
   p
     = f.label :Email
     = f.email_field :email

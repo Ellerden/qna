@@ -27,7 +27,7 @@ feature 'User can sign in via social networks', %q{
           expect(page).to have_content("Seems like we don't have your email - enter it below to confirm and continue.")
           click_on 'Confirm Email'
 
-          expect(current_path).to eq root_path
+          expect(current_path).to eq request_email_path
         end
 
         scenario 'Email confirmed and user tries to log in via Vkontakte' do
