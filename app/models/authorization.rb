@@ -2,7 +2,8 @@ class Authorization < ApplicationRecord
   belongs_to :user
 
   validates :provider, :uid, presence: true
-  validates :uid, uniqueness: { scope: [:provider, :linked_email] }
+  validates :uid, uniqueness: { scope: [:provider, :linked_email], 
+                                message: 'This account with this email is already taken' }
 
   def activate_email
     transaction do

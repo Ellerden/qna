@@ -23,6 +23,23 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe '.find_or_init_skip_confirmation' do
+    let!(:user) { create(:user) }
+    
+    it 'finds existing user' do
+      expect(User.find_or_init_skip_confirmation(user.email)).to eq user
+    end
+
+    it 'initializes new user' do
+      expect { User.find_or_init_skip_confirmation('new@email.com') }.to change(User, :count).by(1)
+    end
+
+    it 'it sends no confirmation letter to new user' do
+      new_user = User.find_or_init_skip_confirmation('new@email.com')
+      expect(new_user).to be_confirmed
+    end
+  end
+
   describe '#author_of?' do
     let(:user) { create(:user) }
     let(:user2) { create(:user) }
