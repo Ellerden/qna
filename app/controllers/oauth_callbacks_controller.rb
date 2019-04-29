@@ -18,20 +18,28 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
       authorization.activate_email 
       redirect_to new_user_session_path, notice: "Your account was succesfully verified. Now you can log in via #{authorization.provider.capitalize}"
     else
-      redirect_to new_user_session_path, alert: "Sorry. Something went wrong, try confirming the mail again."
+      redirect_to new_user_session_path, alert: "#{params[:token]} ---- #{Authorization.first.confirmation_token} Sorry. Something went wrong, try confirming the mail again."
     end
   end
 
   def confirm_email
-    begin
-      pending_user = User.find_or_init_skip_confirmation(params[:email])
-      aut = pending_user.authorizations.create!(provider: session[:auth]['provider'], uid: session[:auth]['uid'], 
-                                                  linked_email: params[:email], confirmation_token: Devise.friendly_token[0, 20],
-                                                  confirmation_sent_at: Time.now)
-      OauthMailer.send_confirmation_letter(aut).deliver_now
-      redirect_to root_path, notice: "Great! Now confirm your email, we've sent you a letter!"
-    rescue Exception => e
-      redirect_to root_path, alert: "Something went wrong: #{e.message}"
+    pending_user = User.find_or_init_skip_confirmation(params[:email])
+    if pending_user
+      aut = Authorization.where(provider: session[:auth]['provider'], uid: session[:auth]['uid'], linked_email: params[:email])
+                         .first_or_initialize do |auth|
+        auth.user = pending_user
+        auth.confirmation_token = Devise.friendly_token[0, 20],
+        auth.confirmation_sent_at = Time.now.utc
+      end
+
+      if aut.save
+        OauthMailer.send_confirmation_letter(aut).deliver_now
+        redirect_to root_path, notice: "Great! Now confirm your email, we've sent you a letter!"
+      else
+        redirect_to root_path, alert: "Something went wrong. Please try again later or use another sign in method"
+      end
+    else
+      redirect_to root_path, alert: "USER NOT FOUND! "
     end
   end
 
@@ -57,8 +65,4 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
   def has_email?
     request.env['omniauth.auth']['info']['email'].present?
   end
-
-  # def auth
-  #   request.env['omniauth.auth'] || OmniAuth::AuthHash.new(params['auth'])
-  # end
 end

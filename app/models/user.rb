@@ -35,14 +35,15 @@ class User < ApplicationRecord
   end
 
   def self.find_or_init_skip_confirmation(email)
+
     password = Devise.friendly_token[0, 20]
+   
     user = User.find_or_initialize_by(email: email) do |u|
       u.password = password
       u.password_confirmation = password
     end
 
     user.skip_confirmation!
-    user.save
-    user
+    user if user.save
   end
 end
