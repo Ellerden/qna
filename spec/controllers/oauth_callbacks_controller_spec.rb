@@ -152,25 +152,29 @@ RSpec.describe OauthCallbacksController, type: :controller do
     end
   end
 
-  # describe 'POST #confirm_email' do
-  #   before do
-  #     request.env["devise.mapping"] = Devise.mappings[:user]
-  #   end
+  describe 'POST #confirm_email' do
+    before do
+      request.env["devise.mapping"] = Devise.mappings[:user]
+      request.env["omniauth.auth"] = mock_auth_hash(:facebook)
+      get :facebook
+    end
 
-  #   context 'confirms_email' do
-  #     let(:confirm_email) { post :confirm_email, params: { email: 'test-email@test.ru' }, 
-  #                           session: { auth: { uid: '12345', provider: 'vkontakte'} } }
+    let(:confirm_email) { post :confirm_email, params: { email: 'mockuser@test.com'}, session: { auth: request.env["omniauth.auth"] } }
 
-  #     it 'redirects to new_user_session_path' do
-  #       confirm_email
-  #       expect(response).to redirect_to new_user_session_path
-  #     end
+    it 'redirects to root_path' do
+      #session[:auth]['uid'].should == '12345'
+      confirm_email
+      expect(response).to redirect_to root_path
+    end
 
-  #     it 'sends an email' do
-  #       expect { confirm_email }.to change{ ActionMailer::Base.deliveries.count }.by(1)
-  #     end
-  #   end
-  # end
+    it 'sends an email' do
+      request.env["devise.mapping"] = Devise.mappings[:user]
+      request.env["omniauth.auth"] = mock_auth_hash(:facebook)
+      get :facebook
+      
+      expect { confirm_email }.to change{ ActionMailer::Base.deliveries.count }.by(1)
+    end
+  end
 
   describe 'GET #verify_email' do
     before do

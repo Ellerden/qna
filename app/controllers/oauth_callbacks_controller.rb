@@ -23,7 +23,6 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def confirm_email
-    puts params[:email]
     pending_user = User.find_or_init_skip_confirmation(params[:email])
     if pending_user
       aut = Authorization.where(provider: session[:auth]['provider'], uid: session[:auth]['uid'], linked_email: params[:email])

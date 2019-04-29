@@ -101,3 +101,8 @@ RSpec.configure do |config|
   #   # as the one that triggered the failure.
   #   Kernel.srand config.seed
 end
+
+def session
+  last_request.env['rack.session']
+end
+

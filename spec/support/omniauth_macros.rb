@@ -4,7 +4,7 @@ module OmniauthMacros
     # authentication hashes to return during integration testing.
     OmniAuth.config.mock_auth[provider] = OmniAuth::AuthHash.new({
       provider: provider,
-      uid: '123545',
+      uid: '12345',
       info: {
         name: 'mockuser',
         email: email

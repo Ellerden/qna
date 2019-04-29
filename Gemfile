@@ -51,6 +51,7 @@ gem 'omniauth'
 gem 'omniauth-github'
 gem 'omniauth-facebook'
 gem 'omniauth-vkontakte'
+gem 'rack_session_access'
 
 # network
 gem "octokit", "~> 4.0"
