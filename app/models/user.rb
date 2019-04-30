@@ -2,7 +2,9 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable, 
+         :confirmable, 
+         :omniauthable, omniauth_providers: %i[github facebook vkontakte]
 
   has_many :questions, class_name: 'Question', foreign_key: :author_id,
                            dependent: :destroy
@@ -12,6 +14,7 @@ class User < ApplicationRecord
                            dependent: :destroy            
   has_many :awards
   has_many :votes
+  has_many :authorizations, dependent: :destroy
 
   def author_of?(resource)
     self.id == resource.author_id
@@ -24,6 +27,21 @@ class User < ApplicationRecord
 
   # обращение к базе 2 - подумать может можно минимизировать обращения
   def previous_vote_value(resource)
-    value = votes.where(voteable: resource).pluck(:value).first
+    votes.where(voteable: resource).pluck(:value).first
+  end
+
+  def self.find_for_oauth(auth)
+    FindForOauthService.new(auth).call
+  end
+
+  def self.find_or_init_skip_confirmation(email)
+    password = Devise.friendly_token[0, 20]
+    user = User.find_or_initialize_by(email: email) do |u|
+      u.password = password
+      u.password_confirmation = password
+    end
+
+    user.skip_confirmation!
+    user if user.save
   end
 end

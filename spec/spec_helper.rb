@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 # require 'webmock/rspec'
 # require 'vcr'
-
 # VCR.configure do |c|
 #   c.cassette_library_dir = 'fixtures/vcr_cassettes'
 #   c.ignore_hosts '127.0.0.1', 'localhost'
@@ -24,6 +23,7 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+  # include our macro
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
@@ -53,7 +53,6 @@ RSpec.configure do |config|
   # inherited by the metadata hash of host groups and examples, rather than
   # triggering implicit auto-inclusion in groups with matching metadata.
   config.shared_context_metadata_behavior = :apply_to_host_groups
-
   # The settings below are suggested to provide a good initial experience
   # with RSpec, but feel free to customize to your heart's content.
   #   # This allows you to limit a spec run to individual examples or groups
@@ -102,3 +101,8 @@ RSpec.configure do |config|
   #   # as the one that triggered the failure.
   #   Kernel.srand config.seed
 end
+
+def session
+  last_request.env['rack.session']
+end
+

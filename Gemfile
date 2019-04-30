@@ -47,6 +47,11 @@ gem "cocoon"
 gem 'valid_url'
 gem 'skim'
 gem 'gon'
+gem 'omniauth'
+gem 'omniauth-github'
+gem 'omniauth-facebook'
+gem 'omniauth-vkontakte'
+gem 'rack_session_access'
 
 # network
 gem "octokit", "~> 4.0"
@@ -56,6 +61,8 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails'
   gem 'rspec-rails', '~> 3.8'
+  gem 'letter_opener'
+  gem 'capybara-email'
 end
 
 group :development do

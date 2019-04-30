@@ -16,7 +16,7 @@ feature 'User can sign in', %q{
       fill_in 'Password', with: '123456'
       fill_in 'Password confirmation', with: '123456'
       click_on 'Sign up'
-      expect(page).to have_content 'Welcome! You have signed up successfully.'
+      expect(page).to have_content 'A message with a confirmation link has been sent to your email address.'
     end
 
     scenario 'User tries to register with error' do

@@ -1,8 +1,13 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  devise_for :users
   root 'questions#index'
+
+  devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
+  devise_scope :user do
+    post "/confirm_email", to: "oauth_callbacks#confirm_email", as: :request_email
+    get "/verify_email", to: "oauth_callbacks#verify_email", as: :verify_email
+  end
 
   mount ActionCable.server => '/cable'
 
