@@ -28,19 +28,45 @@ RSpec.describe Ability, type: :model do
     it { should_not be_able_to :manage, :all }
     it { should be_able_to :read, :all }
 
-    it { should be_able_to :create, Question }
-    it { should be_able_to :create, Answer }
-    it { should be_able_to :create, Comment }
+    context 'Question' do
+      it { should be_able_to :create, Question }
+      it { should be_able_to :update, create(:question, author: user), author: user }
+      it { should_not be_able_to :update, create(:question, author: user2), author: user }
+      it { should be_able_to :destroy, create(:question, author: user), author: user }
+      it { should_not be_able_to :destroy, create(:question, author: user2), author: user }
+      it { should be_able_to :set_best, create(:question, author: user), author: user }
+      it { should_not be_able_to :set_best, create(:question, author: user2), author: user }
+      it { should be_able_to :upvote, create(:question, author: user2), author: user }
+      it { should_not be_able_to :upvote, create(:question, author: user), author: user }
+      it { should be_able_to :downvote, create(:question, author: user2), author: user }
+      it { should_not be_able_to :downvote, create(:question, author: user), author: user }
+    end
 
-    it { should be_able_to :update, create(:question, author: user), author: user }
-    it { should_not be_able_to :update, create(:question, author: user2), author: user }
+    context 'Answer' do
+      let(:question) { create(:question, author: user) }
 
-    let(:question) { create(:question, author: user) }
+      it { should be_able_to :create, Answer }
+      it { should be_able_to :update, create(:answer, question: question, author: user), author: user }
+      it { should_not be_able_to :update, create(:answer, question: question, author: user2), author: user }
+      it { should be_able_to :destroy, create(:answer, question: question, author: user), author: user }
+      it { should_not be_able_to :destroy, create(:answer, question: question, author: user2), author: user }
+      it { should be_able_to :set_best, create(:answer, question: question, author: user), author: user }
+      it { should_not be_able_to :set_best, create(:answer, question: question, author: user2), author: user }
+      it { should be_able_to :upvote, create(:answer, question: question, author: user2), author: user }
+      it { should_not be_able_to :upvote, create(:answer, question: question, author: user), author: user }
+      it { should be_able_to :downvote, create(:answer, question: question, author: user2), author: user }
+      it { should_not be_able_to :downvote, create(:answer, question: question, author: user), author: user }
+    end
 
-    it { should be_able_to :update, create(:answer, question: question, author: user), author: user }
-    it { should_not be_able_to :update, create(:answer, question: question, author: user2), author: user }
+    context 'Comment' do
+      let(:question) { create(:question, author: user) }
 
-    it { should be_able_to :update, create(:comment, commentable: question, author: user), author: user }
-    it { should_not be_able_to :update, create(:comment, commentable: question, author: user2), author: user }
+      it { should be_able_to :create, Comment }
+      it { should be_able_to :update, create(:comment, commentable: question, author: user), author: user }
+      it { should_not be_able_to :update, create(:comment, commentable: question, author: user2), author: user }
+
+      it { should be_able_to :destroy, create(:comment, commentable: question, author: user), author: user }
+      it { should_not be_able_to :destroy, create(:comment, commentable: question, author: user2), author: user }
+    end
   end
 end
