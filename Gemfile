@@ -51,7 +51,9 @@ gem 'omniauth'
 gem 'omniauth-github'
 gem 'omniauth-facebook'
 gem 'omniauth-vkontakte'
-gem 'rack_session_access'
+gem 'rack_session_access' #I don't use it
+gem 'cancancan'
+gem 'pundit'
 
 # network
 gem "octokit", "~> 4.0"

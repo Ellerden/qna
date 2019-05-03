@@ -3,6 +3,8 @@ class CommentsController < ApplicationController
   before_action :set_resource, only: [:create]
   after_action :publish_comment, only: [:create]
 
+  authorize_resource
+
   def create
     @comment = @resource.comments.create(author: current_user, body: comment_params['body'])
   end
