@@ -3,7 +3,7 @@
 class FilesController < ActionController::Base
   before_action :authenticate_user!
 
-  authorize_resource
+  #authorize_resource
 
   def destroy
     @file = ActiveStorage::Attachment.find(params[:id])

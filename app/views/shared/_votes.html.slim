@@ -1,4 +1,4 @@
 .score = resource.score
-- unless !current_user || current_user&.author_of?(resource)
+- if can?(:vote, resource) #unless !current_user || current_user&.author_of?(resource)
   .upvote = link_to '+', polymorphic_url([:upvote, resource]), class: 'upvote-btn', method: :post, remote: true, data: { type: 'json' }
   .downvote = link_to '-', polymorphic_url([:downvote, resource]), class: 'downvote-btn', method: :post, remote: true, data: { type: 'json' }

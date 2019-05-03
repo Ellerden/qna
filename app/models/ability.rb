@@ -26,11 +26,13 @@ class Ability
     guest_abilities
     can :create, [Question, Answer, Comment]
     can :modify, [Question, Answer, Comment], author: user
-    can :set_best, [Question, Answer], author: user
+    can :set_best, Answer, question: { author: user }
     #author: !user
     can :vote, [Question, Answer] do |resource|
       !user.author_of?(resource)
     end
+
+    can :sign_out, User
   end
 
   def admin_abilities

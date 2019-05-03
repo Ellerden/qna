@@ -34,8 +34,6 @@ RSpec.describe Ability, type: :model do
       it { should_not be_able_to :update, create(:question, author: user2), author: user }
       it { should be_able_to :destroy, create(:question, author: user), author: user }
       it { should_not be_able_to :destroy, create(:question, author: user2), author: user }
-      it { should be_able_to :set_best, create(:question, author: user), author: user }
-      it { should_not be_able_to :set_best, create(:question, author: user2), author: user }
       it { should be_able_to :upvote, create(:question, author: user2), author: user }
       it { should_not be_able_to :upvote, create(:question, author: user), author: user }
       it { should be_able_to :downvote, create(:question, author: user2), author: user }
@@ -44,14 +42,17 @@ RSpec.describe Ability, type: :model do
 
     context 'Answer' do
       let(:question) { create(:question, author: user) }
+      let(:question2) { create(:question, author: user2) }
 
       it { should be_able_to :create, Answer }
       it { should be_able_to :update, create(:answer, question: question, author: user), author: user }
       it { should_not be_able_to :update, create(:answer, question: question, author: user2), author: user }
       it { should be_able_to :destroy, create(:answer, question: question, author: user), author: user }
       it { should_not be_able_to :destroy, create(:answer, question: question, author: user2), author: user }
-      it { should be_able_to :set_best, create(:answer, question: question, author: user), author: user }
-      it { should_not be_able_to :set_best, create(:answer, question: question, author: user2), author: user }
+
+      it { should be_able_to :set_best, create(:answer, question: question, author: user2) }
+      it { should_not be_able_to :set_best, create(:answer, question: question2, author: user2) }
+
       it { should be_able_to :upvote, create(:answer, question: question, author: user2), author: user }
       it { should_not be_able_to :upvote, create(:answer, question: question, author: user), author: user }
       it { should be_able_to :downvote, create(:answer, question: question, author: user2), author: user }

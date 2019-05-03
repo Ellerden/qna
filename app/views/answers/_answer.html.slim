@@ -2,7 +2,7 @@
   .answer-vote
     = render 'shared/votes', resource: answer
 
-  - if current_user&.author_of?(answer.question)
+  - if can?(:set_best, answer)
     => link_to 'Best', set_best_answer_path(answer), method: :patch, remote: true, class: 'set-best-answer'
 
   = answer.body
@@ -31,7 +31,7 @@
 
   = render "comments/comments", resource: answer
 
-  - if current_user&.author_of?(answer)
+  - if can?(:modify, answer)
     =< link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
     = link_to 'Delete', answer_path(answer), method: :delete, remote: true
 
