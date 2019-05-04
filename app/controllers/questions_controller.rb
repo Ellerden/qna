@@ -9,18 +9,15 @@ class QuestionsController < ApplicationController
   authorize_resource
 
   def index
-   # authorize! :read, Question
     @questions = Question.all
   end
 
   def show
-   # authorize! :read, question
     @answer = question.answers.build
     gon.question_id = question.id
   end
 
   def new
-   # authorize! :create, Question
     @question = Question.new
     @question.links.new
     @question.award = Award.new
@@ -36,7 +33,6 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-   # authorize! :destroy, question
     return head :forbidden unless current_user.author_of?(question)
 
     if question.destroy

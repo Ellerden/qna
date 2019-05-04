@@ -25,8 +25,8 @@ class Ability
 
     guest_abilities
     can :create, [Question, Answer, Comment]
-    can :modify, [Question, Answer, Comment], author: user
-    can :set_best, Answer, question: { author: user }
+    can :modify, [Question, Answer, Comment], author_id: user.id
+    can :set_best, Answer, question: { author_id: user.id }
     #author: !user
     can :vote, [Question, Answer] do |resource|
       !user.author_of?(resource)
