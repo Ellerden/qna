@@ -1,4 +1,6 @@
 class OauthCallbacksController < Devise::OmniauthCallbacksController
+  #skip_authorization_check
+  
   def github
     sign_in_via_provider('Github')
   end
@@ -28,7 +30,7 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
       aut = Authorization.where(provider: session[:auth]['provider'], uid: session[:auth]['uid'], linked_email: params[:email])
                          .first_or_initialize do |auth|
         auth.user = pending_user
-        auth.confirmation_token = Devise.friendly_token[0, 20],
+        auth.confirmation_token = Devise.friendly_token[0, 20]
         auth.confirmation_sent_at = Time.now.utc
       end
 

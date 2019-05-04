@@ -10,6 +10,16 @@ class ApplicationController < ActionController::Base
     renderer.render(*args)
   end
 
+  rescue_from CanCan::AccessDenied do |exception|
+    respond_to  do |format|
+      format.js { head :forbidden }
+      format.json { head :forbidden }
+      format.html { redirect_to root_url, alert: exception.message }
+    end
+  end
+
+  #check_authorization
+
   private
 
   def set_gon_variables

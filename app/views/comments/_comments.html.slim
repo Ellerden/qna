@@ -2,7 +2,7 @@
 .comments
   = render resource.comments
 
-- if current_user
+- if can?(:create, Comment) #current_user
   .comment-form
     = form_with(model: [resource, Comment.new], class: 'new-comment', remote: true) do |f|
       p

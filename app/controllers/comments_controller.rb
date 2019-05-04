@@ -3,6 +3,8 @@ class CommentsController < ApplicationController
   before_action :set_resource, only: [:create]
   after_action :publish_comment, only: [:create]
 
+  authorize_resource
+
   def create
     @comment = @resource.comments.create(author: current_user, body: comment_params['body'])
   end
@@ -31,7 +33,7 @@ class CommentsController < ApplicationController
 
   def publish_comment
     return if @comment.errors.any?
-    # транслируем прямо на Question или на answer.question - есть тип не Question
+    # транслируем прямо на Question или на answer.question - если тип не Question
     resource_to_broadcast = @resource.class == Question ? @resource : @resource.question
     CommentsChannel.broadcast_to(
       resource_to_broadcast,
