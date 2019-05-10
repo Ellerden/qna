@@ -54,6 +54,9 @@ gem 'omniauth-vkontakte'
 gem 'rack_session_access' #I don't use it
 gem 'cancancan'
 gem 'pundit'
+gem 'doorkeeper'
+gem 'active_model_serializers', '~> 0.10'
+gem 'oj'
 
 # network
 gem "octokit", "~> 4.0"
