@@ -32,4 +32,39 @@ describe 'Profiles API', type: :request do
       end
     end
   end
+
+  describe 'GET /profiles' do
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :get }
+      let(:api_path) { '/api/v1/profiles/' }
+    end
+
+    context 'Authorized' do
+      let(:me) { create(:user) }
+      let(:access_token) { create(:access_token, resource_owner_id: me.id) }
+      let!(:other_users) { create_list(:user, 2) }
+      before { get '/api/v1/profiles/', params: { access_token: access_token.token }, headers: headers }
+      
+      it 'returns 200 status' do
+        expect(response).to be_successful
+      end
+
+      it 'does not show current user' do
+        expect(response.body).not_to include(me.to_json)
+      end
+
+      it 'shows list of all other users' do
+        other_users.each do |user|
+          expect(response.body).to include user.to_json
+        end
+      end
+
+      it 'shows other user only private fields' do
+        %w[password encrypted_password].each do |attr| 
+          expect(json.first).to_not have_key(attr)
+        end
+      end
+    end
+
+  end
 end
