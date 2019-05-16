@@ -23,7 +23,7 @@ describe 'Answers API', type: :request do
       let(:access_token) { create(:access_token) }
     
       before do
-        answers.first.files.attach(io: Rack::Test::UploadedFile.new("#{Rails.root}/spec/rails_helper.rb"), filename: 'rails_helper.rb')
+        answer.files.attach(io: Rack::Test::UploadedFile.new("#{Rails.root}/spec/rails_helper.rb"), filename: 'rails_helper.rb')
         get "/api/v1/answers/#{answer.id}", params: { access_token: access_token.token }, headers: headers 
       end
       
@@ -40,7 +40,7 @@ describe 'Answers API', type: :request do
       it_behaves_like 'API Linkable'
 
       it_behaves_like 'API Attachable' do
-
+        let(:file) { answer.files.first }
       end
 
       it_behaves_like 'API Commentable'

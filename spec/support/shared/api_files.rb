@@ -1,17 +1,13 @@
 shared_examples_for "API Attachable" do
   context 'has files' do
     # because of order DESC - files.first is last in json
-   # let!(:json_file) { json["#{resource}"]['files'].last }
+    let(:json_file) { json["#{resource}"]['files'].last }
 
     it 'returns list of files' do
-
-    #  pp json['answer']['files']
-    #  pp answer.files
       expect(json["#{resource}"]['files'].size).to eq 1
     end
 
     it 'contains filename' do
-      pp json["#{resource}"]['files']
       expect(json_file['filename']).to eq file.blob.filename.to_json
     end
 
