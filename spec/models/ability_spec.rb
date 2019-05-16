@@ -28,6 +28,9 @@ RSpec.describe Ability, type: :model do
     it { should_not be_able_to :manage, :all }
     it { should be_able_to :read, :all }
 
+    it { should be_able_to :me, user: user }
+    it { should be_able_to :sign_out, user: user }
+
     context 'Question' do
       it { should be_able_to :create, Question }
       it { should be_able_to :update, create(:question, author: user), author: user }
