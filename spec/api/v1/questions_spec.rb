@@ -109,4 +109,38 @@ describe 'Questions API', type: :request do
       it_behaves_like 'API Commentable'
     end
   end
+
+  describe 'POST #create' do
+    let(:headers) { { "CONTENT_TYPE" => "application/json",
+                    "ACCEPT" => "application/json" } }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :get }
+      let(:api_path) { '/api/v1/questions' }
+    end
+
+    context 'Authorized' do
+      let(:access_token) { create(:access_token) }
+
+      before do
+        question.files.attach(io: Rack::Test::UploadedFile.new("#{Rails.root}/spec/rails_helper.rb"), filename: 'rails_helper.rb')
+        post "/api/v1/questions/", params: { action: :create, format: :json, question: attributes_for(:question), access_token: access_token.token }, headers: headers 
+      end
+
+      it 'returns 200 status' do
+        expect(response).to be_successful
+      end
+
+      it 'saves a new question in a database' do
+        expect { post "/api/v1/questions/", params: { action: :create, format: :json, question: attributes_for(:question), access_token: access_token.token }, headers: headers }.to change(Question, :count).by(1)
+      end
+    end
+
+  end
+
+  describe 'PATCH #update' do
+  end
+
+  describe 'DELETE #destroy' do
+  end
 end
