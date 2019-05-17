@@ -5,18 +5,13 @@ describe 'Questions API', type: :request do
                     "ACCEPT" => "application/json" } }
 
   let(:resource) { 'question' }
-
   let(:user) { create(:user) }
   let!(:questions) { create_list(:question, 2, author: user) }
-
   let!(:question) { questions.first }
   let(:question_response) { json['questions'].first }
   let!(:answers) { create_list(:answer, 3, question: question, author: user) }
   let!(:answer) { answers.first }
   let(:answer_response) { question_response['answers'].first }
-
-
-
   
   describe 'GET #index (/api/v1/questions/)' do
     it_behaves_like 'API Authorizable' do
@@ -145,11 +140,14 @@ describe 'Questions API', type: :request do
         before do
           post "/api/v1/questions/", params: { question: attributes_for(:question, :invalid), access_token: access_token.token }
         end
+        
+        it 'returns Unprocessable entity status' do
+          expect(response.status).to be 422
+        end
 
-        # HOW to return another status here? 
-        # it 'returns NOT SUCCESSFULL status' do
-        #   expect(response).not_to be_successful
-        # end
+        it 'returns list of errors' do
+          expect(json['errors']).not_to be_empty
+        end
 
         it 'does not save a new question in a database' do
           expect { post "/api/v1/questions/", params: { question: attributes_for(:question, :invalid), access_token: access_token.token } }.not_to change(Question, :count)

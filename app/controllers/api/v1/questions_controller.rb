@@ -13,8 +13,12 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def create
-    @question = current_resource_owner.questions.create(question_params)
-    render json: @question
+    @question = current_resource_owner.questions.new(question_params)
+    if @question.save
+      render json: @question
+    else
+      render json: { errors: @question.errors }, status: :unprocessable_entity
+    end
   end
 
   def update
@@ -24,8 +28,6 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   def destroy
     @question = Question.find(params[:id])
     @question.destroy
-
-    #render json: @questions
   end
 
   private

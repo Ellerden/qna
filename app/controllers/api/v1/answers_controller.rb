@@ -13,9 +13,12 @@ class Api::V1::AnswersController < Api::V1::BaseController
   end
 
   def create
-    @answer = current_resource_owner.answers.create(answer_params.merge(question_id: question.id))
-
-    render json: @answer
+    @answer = current_resource_owner.answers.new(answer_params.merge(question_id: question.id))
+    if @answer.save
+      render json: @answer
+    else
+      render json: { errors: @answer.errors }, status: :unprocessable_entity
+    end
   end
 
   private

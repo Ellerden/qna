@@ -79,13 +79,15 @@ describe 'Answers API', type: :request do
           post "/api/v1/questions/#{question.id}/answers", params: { question_id: question, answer: attributes_for(:answer, :invalid), access_token: access_token.token }
         end
 
-        # HOW to return another status here? 
-        # it 'returns 200 status' do
-        #   expect(response).not_to be_successful
-        # end
+        it 'returns Unprocessable entity status' do
+          expect(response.status).to be 422
+        end
 
+        it 'returns list of errors' do
+          expect(json['errors']).not_to be_empty
+        end
+        
         it 'does not save a new answer in a database' do
-
           expect { post "/api/v1/questions/#{question.id}/answers", params: { question_id: question, answer: attributes_for(:answer, :invalid), access_token: access_token.token } }.not_to change(Answer, :count)
         end
       end
