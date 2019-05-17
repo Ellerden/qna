@@ -119,30 +119,94 @@ describe 'Questions API', type: :request do
                     "ACCEPT" => "application/json" } }
 
     it_behaves_like 'API Authorizable' do
-      let(:method) { :get }
+      let(:method) { :post }
       let(:api_path) { '/api/v1/questions' }
     end
 
     context 'Authorized' do
       let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
-      before do
-        post "/api/v1/questions/", params: { question: attributes_for(:question), access_token: access_token.token }
+
+      context "with valid attributes" do
+        before do
+          post "/api/v1/questions/", params: { question: attributes_for(:question), access_token: access_token.token }
+        end
+
+        it 'returns 200 status' do
+          expect(response).to be_successful
+        end
+
+        it 'saves a new question in a database' do
+          expect { post "/api/v1/questions/", params: { question: attributes_for(:question), access_token: access_token.token } }.to change(Question, :count).by(1)
+        end
       end
 
-      it 'returns 200 status' do
-        expect(response).to be_successful
-      end
+      context "with invalid attributes" do
+        before do
+          post "/api/v1/questions/", params: { question: attributes_for(:question, :invalid), access_token: access_token.token }
+        end
 
-      it 'saves a new question in a database' do
-        expect { post "/api/v1/questions/", params: { question: attributes_for(:question), access_token: access_token.token } }.to change(Question, :count).by(1)
+        # HOW to return another status here? 
+        # it 'returns 200 status' do
+        #   expect(response).not_to be_successful
+        # end
+
+        it 'does not save a new question in a database' do
+          expect { post "/api/v1/questions/", params: { question: attributes_for(:question, :invalid), access_token: access_token.token } }.not_to change(Question, :count)
+        end
       end
     end
-
   end
 
-  describe 'PATCH #update' do
+
+  describe 'PATCH #update'  do
+    let!(:question) { create(:question, author: user) }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :patch }
+      let(:api_path) { "/api/v1/questions/#{question.id}" }
+    end
+
+    context 'Authorized' do
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+
+      context "with valid attributes" do
+        before do
+          patch "/api/v1/questions/#{question.id}", params: { question: attributes_for(:question), access_token: access_token.token }
+        end
+
+        it 'changes question title' do
+          patch "/api/v1/questions/#{question.id}", params: { id: question, question: { title: 'new title' }, access_token: access_token.token }
+          question.reload
+          expect(question.title).to eq 'new title'
+        end
+
+        it 'returns 200 status' do
+          expect(response).to be_successful
+        end
+
+        it 'change' do
+          expect { patch "/api/v1/questions/", params: { question: attributes_for(:question), access_token: access_token.token } }.to change(Question, :count).by(1)
+        end
+      end
+
+      context "with invalid attributes" do
+        before do
+          patch "/api/v1/questions/", params: { question: attributes_for(:question, :invalid), access_token: access_token.token }
+        end
+
+        # HOW to return another status here? 
+        # it 'returns 200 status' do
+        #   expect(response).not_to be_successful
+        # end
+
+        it 'does not save a new question in a database' do
+          expect { post "/api/v1/questions/", params: { question: attributes_for(:question, :invalid), access_token: access_token.token } }.not_to change(Question, :count)
+        end
+      end
+    end
   end
+
 
   describe 'DELETE #destroy' do
   end

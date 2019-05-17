@@ -10,7 +10,7 @@ Rails.application.routes.draw do
       end
 
       resources :questions, only: %i[index show create destroy update], shallow: true do
-        resources :answers, only: %i[index show create destroy update]
+        resources :answers, only: %i[index show create]
       end
     end
   end

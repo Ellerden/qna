@@ -46,4 +46,51 @@ describe 'Answers API', type: :request do
       it_behaves_like 'API Commentable'
     end
   end
+
+  describe 'POST #create' do
+    let(:headers) { { "CONTENT_TYPE" => "application/json",
+                    "ACCEPT" => "application/json" } }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :post }
+      let(:api_path) { "/api/v1/questions/#{question.id}/answers" }
+    end
+
+    context 'Authorized' do
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+
+
+      context "with valid attributes" do
+        before do
+          post "/api/v1/questions/#{question.id}/answers", params: { question_id: question, answer: attributes_for(:answer), access_token: access_token.token }
+        end
+
+        it 'returns 200 status' do
+          expect(response).to be_successful
+        end
+
+        it 'saves a new answer in a database' do
+          expect { post "/api/v1/questions/#{question.id}/answers", params: { question_id: question, answer: attributes_for(:answer), access_token: access_token.token } }.to change(Answer, :count).by(1)
+        end
+      end
+
+      context "with invalid attributes" do
+        before do
+          post "/api/v1/questions/#{question.id}/answers", params: { question_id: question, answer: attributes_for(:answer, :invalid), access_token: access_token.token }
+        end
+
+        # HOW to return another status here? 
+        # it 'returns 200 status' do
+        #   expect(response).not_to be_successful
+        # end
+
+        it 'does not save a new answer in a database' do
+
+          expect { post "/api/v1/questions/#{question.id}/answers", params: { question_id: question, answer: attributes_for(:answer, :invalid), access_token: access_token.token } }.not_to change(Answer, :count)
+        end
+      end
+    end
+  end
+
+
 end
