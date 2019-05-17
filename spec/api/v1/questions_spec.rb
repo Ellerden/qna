@@ -211,5 +211,19 @@ describe 'Questions API', type: :request do
   end
 
   describe 'DELETE #destroy' do
+    let!(:question) { create(:question, author: user) }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :delete }
+      let(:api_path) { "/api/v1/questions/#{question.id}" }
+    end
+
+    context 'Authorized' do
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+
+      it 'deletes question from db' do
+        expect { delete "/api/v1/questions/#{question.id}", params: { id: question, access_token: access_token.token } }.to change(Question,:count).by(-1)
+      end
+    end
   end
 end

@@ -22,7 +22,10 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def destroy
-    question.destroy
+    @question = Question.find(params[:id])
+    @question.destroy
+
+    #render json: @questions
   end
 
   private
