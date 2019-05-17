@@ -13,7 +13,8 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def create
-    current_resource_owner.questions.create(question_params)
+    @question = current_resource_owner.questions.create(question_params)
+    render json: @question
   end
 
   def update

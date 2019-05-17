@@ -8,11 +8,15 @@ describe 'Questions API', type: :request do
 
   let(:user) { create(:user) }
   let!(:questions) { create_list(:question, 2, author: user) }
+
   let!(:question) { questions.first }
   let(:question_response) { json['questions'].first }
   let!(:answers) { create_list(:answer, 3, question: question, author: user) }
   let!(:answer) { answers.first }
   let(:answer_response) { question_response['answers'].first }
+
+
+
   
   describe 'GET #index (/api/v1/questions/)' do
     it_behaves_like 'API Authorizable' do
@@ -120,11 +124,10 @@ describe 'Questions API', type: :request do
     end
 
     context 'Authorized' do
-      let(:access_token) { create(:access_token) }
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
       before do
-        question.files.attach(io: Rack::Test::UploadedFile.new("#{Rails.root}/spec/rails_helper.rb"), filename: 'rails_helper.rb')
-        post "/api/v1/questions/", params: { action: :create, format: :json, question: attributes_for(:question), access_token: access_token.token }, headers: headers 
+        post "/api/v1/questions/", params: { question: attributes_for(:question), access_token: access_token.token }
       end
 
       it 'returns 200 status' do
@@ -132,7 +135,7 @@ describe 'Questions API', type: :request do
       end
 
       it 'saves a new question in a database' do
-        expect { post "/api/v1/questions/", params: { action: :create, format: :json, question: attributes_for(:question), access_token: access_token.token }, headers: headers }.to change(Question, :count).by(1)
+        expect { post "/api/v1/questions/", params: { question: attributes_for(:question), access_token: access_token.token } }.to change(Question, :count).by(1)
       end
     end
 
