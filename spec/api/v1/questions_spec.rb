@@ -147,7 +147,7 @@ describe 'Questions API', type: :request do
         end
 
         # HOW to return another status here? 
-        # it 'returns 200 status' do
+        # it 'returns NOT SUCCESSFULL status' do
         #   expect(response).not_to be_successful
         # end
 
@@ -157,7 +157,6 @@ describe 'Questions API', type: :request do
       end
     end
   end
-
 
   describe 'PATCH #update'  do
     let!(:question) { create(:question, author: user) }
@@ -181,32 +180,35 @@ describe 'Questions API', type: :request do
           expect(question.title).to eq 'new title'
         end
 
-        it 'returns 200 status' do
-          expect(response).to be_successful
+        it 'changes question body' do
+          patch "/api/v1/questions/#{question.id}", params: { id: question, question: { body: 'new body' }, access_token: access_token.token }
+          question.reload
+          expect(question.body).to eq 'new body'
         end
 
-        it 'change' do
-          expect { patch "/api/v1/questions/", params: { question: attributes_for(:question), access_token: access_token.token } }.to change(Question, :count).by(1)
+        it 'returns 200 status' do
+          expect(response).to be_successful
         end
       end
 
       context "with invalid attributes" do
         before do
-          patch "/api/v1/questions/", params: { question: attributes_for(:question, :invalid), access_token: access_token.token }
+          patch "/api/v1/questions/#{question.id}", params: { question: attributes_for(:question, :invalid), access_token: access_token.token }
         end
 
         # HOW to return another status here? 
-        # it 'returns 200 status' do
+        # it 'returns NOT SUCCESSFULL status' do
         #   expect(response).not_to be_successful
         # end
 
-        it 'does not save a new question in a database' do
-          expect { post "/api/v1/questions/", params: { question: attributes_for(:question, :invalid), access_token: access_token.token } }.not_to change(Question, :count)
+        it 'does not change question attributes' do
+          expect do
+            patch "/api/v1/questions/#{question.id}", params: { id: question, question: attributes_for(:question, :invalid) }
+          end.to_not change(question, :body)
         end
       end
     end
   end
-
 
   describe 'DELETE #destroy' do
   end
