@@ -33,6 +33,7 @@ class Ability
     end
 
     can :sign_out, User
+    can :me, User, id: user.id
   end
 
   def admin_abilities

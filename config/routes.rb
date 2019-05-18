@@ -1,6 +1,20 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  use_doorkeeper
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: [:index] do
+        get :me, on: :collection
+      end
+
+      resources :questions, only: %i[index show create destroy update], shallow: true do
+        resources :answers, only: %i[index show create]
+      end
+    end
+  end
+
   root 'questions#index'
 
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }

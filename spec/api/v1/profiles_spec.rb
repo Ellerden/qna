@@ -1,0 +1,70 @@
+require 'rails_helper'
+
+describe 'Profiles API', type: :request do
+  let(:headers) { { "CONTENT_TYPE" => "application/json",
+                    "ACCEPT" => "application/json" } }
+
+  describe 'GET /api/v1/profiles/me' do
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :get }
+      let(:api_path) { '/api/v1/profiles/me' }
+    end
+
+    context 'Authorized' do
+      let(:me) { create(:user) }
+      let(:access_token) { create(:access_token, resource_owner_id: me.id) }
+      before { get '/api/v1/profiles/me', params: { access_token: access_token.token }, headers: headers }
+      
+      it 'returns 200 status' do
+        expect(response).to be_successful
+      end
+
+      it 'returns all public fields' do
+        %w[id email admin created_at updated_at].each do |attr| 
+          expect(json[attr]).to eq me.send(attr).as_json
+        end
+      end
+
+      it 'does not return private fields' do
+        %w[password encrypted_password].each do |attr| 
+          expect(json).to_not have_key(attr)
+        end
+      end
+    end
+  end
+
+  describe 'GET /profiles' do
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :get }
+      let(:api_path) { '/api/v1/profiles/' }
+    end
+
+    context 'Authorized' do
+      let(:me) { create(:user) }
+      let(:access_token) { create(:access_token, resource_owner_id: me.id) }
+      let!(:other_users) { create_list(:user, 2) }
+      before { get '/api/v1/profiles/', params: { access_token: access_token.token }, headers: headers }
+      
+      it 'returns 200 status' do
+        expect(response).to be_successful
+      end
+
+      it 'does not show current user' do
+        expect(response.body).not_to include(me.to_json)
+      end
+
+      it 'shows list of all other users' do
+        other_users.each do |user|
+          expect(response.body).to include user.to_json
+        end
+      end
+
+      it 'shows other user only private fields' do
+        %w[password encrypted_password].each do |attr| 
+          expect(json.first).to_not have_key(attr)
+        end
+      end
+    end
+
+  end
+end

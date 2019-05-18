@@ -36,8 +36,8 @@ feature 'User can add links to answer', %q{
       #save_and_open_page
       wait_for_ajax
       within '.answers' do
-        # expect(page).to have_link 'Gist1', href: gist_url
-        # expect(page).to have_link 'Gist2', href: gist_url2
+        expect(page).to have_link 'Gist1', href: gist_url
+        expect(page).to have_link 'Gist2', href: gist_url2
       end
     end
 
