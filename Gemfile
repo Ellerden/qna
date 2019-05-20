@@ -57,6 +57,9 @@ gem 'pundit'
 gem 'doorkeeper'
 gem 'active_model_serializers', '~> 0.10'
 gem 'oj'
+gem 'sidekiq'
+gem 'sinatra', require: false
+gem 'whenever', require: false
 
 # network
 gem "octokit", "~> 4.0"

@@ -20,6 +20,7 @@ module Qna
                        request_specs: false
     end
 
+    config.active_job.queue_adapter = :sidekiq
     config.autoload_paths += [config.root.join('app')]
 
     # Settings in config/environments/* take precedence over those specified here.
