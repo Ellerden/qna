@@ -5,10 +5,12 @@ class DailyDigestMailer < ApplicationMailer
   #
   #   en.daily_digest_mailer.digest.subject
   #
-  def digest(user, questions)
+  def digest(user)
     @greeting = "Hi #{user.email}"
-    @questions = questions
 
+    # Cant pass it via Service - 
+    #get ActiveJob::SerializationError: Unsupported argument type: ActiveRecord::Relation
+    @questions = Question.today
     mail to: user.email, subject: 'QnA new questions digest'
   end
 end
