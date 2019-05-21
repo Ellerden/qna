@@ -15,7 +15,7 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
-  after_create :calculate_reputation
+  #after_create :calculate_reputation
 
   scope :today, -> { where(created_at: 24.hours.ago..Time.now) }
 
