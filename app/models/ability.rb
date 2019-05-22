@@ -24,7 +24,7 @@ class Ability
     set_aliases
 
     guest_abilities
-    can :create, [Question, Answer, Comment]
+    can :create, [Question, Answer, Comment, Subscription]
     can :modify, [Question, Answer, Comment], author_id: user.id
     can :set_best, Answer, question: { author_id: user.id }
     #author: !user

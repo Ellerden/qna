@@ -15,6 +15,7 @@ class User < ApplicationRecord
   has_many :awards
   has_many :votes
   has_many :authorizations, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
 
   def author_of?(resource)
     self.id == resource.author_id
