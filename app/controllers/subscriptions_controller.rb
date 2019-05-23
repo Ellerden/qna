@@ -2,7 +2,6 @@ class SubscriptionsController < ApplicationController
   before_action :authenticate_user!
 
   authorize_resource
- # skip_authorization_check
 
   def create
     @subscription = current_user.subscriptions.create(question: question)
@@ -17,7 +16,6 @@ class SubscriptionsController < ApplicationController
   private
 
   def question
-    #@question ||= Question.find(params[:question_id])
     @question ||= params[:question_id] ? Question.with_attached_files.find(params[:question_id]) : nil
   end
 
