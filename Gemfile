@@ -60,6 +60,7 @@ gem 'oj'
 gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'whenever', require: false
+gem 'bootstrap'
 
 # network
 gem "octokit", "~> 4.0"

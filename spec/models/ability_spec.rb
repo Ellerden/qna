@@ -31,6 +31,13 @@ RSpec.describe Ability, type: :model do
     it { should be_able_to :me, user: user }
     it { should be_able_to :sign_out, user: user }
 
+    context 'Subscription' do
+      let(:question) { create(:question, author: user) }
+
+      it { should be_able_to :create, Subscription }
+      it { should be_able_to :destroy, create(:subscription, question: question, user: user), user: user }
+    end
+
     context 'Question' do
       it { should be_able_to :create, Question }
       it { should be_able_to :update, create(:question, author: user), author: user }

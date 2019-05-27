@@ -1,5 +1,7 @@
+.subscriptions
+  - if can?(:create, Subscription) && !current_user.author_of?(resource) && !current_user.subscribed?(resource)
+    = button_to 'Subscribe', subscriptions_path(question_id: resource), class: 'button', name: 'btnSubscribe',
+    method: :post, remote: true
 
-// if user not subscribed yet he sees subscribe button
-
-// if user is subscribed he sees inactive button with text 'Subscribed'
-// and another button named 'unsubscribe'
+  - if current_user.subscribed?(resource) && can?(:destroy, @subscription)
+    = button_to 'Unsubscribe', subscription_path(@subscription), class: 'button', name: 'btnUnsubscribe', method: :delete, remote: true

@@ -4,7 +4,9 @@ class QuestionsController < ApplicationController
   include Voted
 
   before_action :authenticate_user!, except: [:index, :show]
+  before_action :find_subscription, only: %i[show update]
   after_action :publish_question, only: [:create]
+  after_action :create_default_subscription, only: [:create]
 
   authorize_resource
 
@@ -86,5 +88,13 @@ class QuestionsController < ApplicationController
         locals: { question: @question },
         )
     )
+  end
+
+  def find_subscription
+    @subscription = question.subscriptions.find_by(author_id: current_user.id)
+  end
+
+  def create_default_subscription
+    @subscription = current_user.subscriptions.create(question: question)
   end
 end

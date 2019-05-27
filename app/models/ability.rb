@@ -25,10 +25,11 @@ class Ability
 
     guest_abilities
     can :create, [Question, Answer, Comment, Subscription]
-    can :destroy, Subscription, user: user.id
+    can :destroy, Subscription do |subscription|
+      user.author_of?(subscription)
+    end
     can :modify, [Question, Answer, Comment], author_id: user.id
     can :set_best, Answer, question: { author_id: user.id }
-    #author: !user
     can :vote, [Question, Answer] do |resource|
       !user.author_of?(resource)
     end

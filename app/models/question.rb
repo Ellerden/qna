@@ -18,8 +18,14 @@ class Question < ApplicationRecord
 
   scope :today, -> { where(created_at: 24.hours.ago..Time.now) }
 
+  after_save :create_subscription
+
   #after_create :calculate_reputation
   private
+
+  def create_subscription
+    self.author.subscriptions.create(question: self)
+  end
 
   # def calculate_reputation
   #   ReputationJob.perform_later(self)
