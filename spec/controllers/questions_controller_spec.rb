@@ -169,7 +169,6 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'gets forbidden status trying to edit someone elses question' do
         patch :update, params: { id: question, question: { body: 'new body' } }
-
         expect(response.status).to eq(403)
       end
     end

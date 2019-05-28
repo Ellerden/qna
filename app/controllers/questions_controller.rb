@@ -44,12 +44,13 @@ class QuestionsController < ApplicationController
   end
 
   def edit
-    return head :forbidden unless current_user.author_of?(answer)
-    #question.links.new
+    return head :forbidden unless current_user.author_of?(question)
+
+    question.links.new
   end
 
   def update
-    return head :forbidden unless current_user.author_of?(answer)
+    return head :forbidden unless current_user.author_of?(question)
 
     if question.update(question_params)
       redirect_to question, notice: 'Your question was successfully edited'
