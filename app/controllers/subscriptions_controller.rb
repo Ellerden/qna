@@ -6,7 +6,6 @@ class SubscriptionsController < ApplicationController
   def create
     @subscription = current_user.subscriptions.create(question: question)
     flash.now[:notice] = "Subscription created! Now you'll receive all answer updates"
-
   end
 
   def destroy

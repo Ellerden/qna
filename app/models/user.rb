@@ -47,7 +47,7 @@ class User < ApplicationRecord
     user if user.save
   end
 
-  def subscribed?(resource)
+  def subscribed_to?(resource)
     resource.subscriptions.exists?(author: self)
    # self.subscriptions.where(question_id: resource.id)
   end

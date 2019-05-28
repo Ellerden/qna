@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
   it { should belong_to(:question) }
+  it { should belong_to(:author).class_name('User') }
   it { should have_many(:links).dependent(:destroy) }
   it { should have_many(:comments).dependent(:destroy) }
 
@@ -15,6 +16,17 @@ RSpec.describe Answer, type: :model do
     expect(Answer.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end
 
+  describe '#scope today' do
+    let(:user) { create(:user) }
+    let!(:question) { create(:question, author: user) }
+    let!(:old_answer) { create(:answer, question: question, author: user, created_at: 1.day.ago) }
+    let!(:recent_answer) { create(:answer, question: question, author: user, created_at: 1.hour.ago) }
+
+    it 'shows answers of particular question created today' do
+      expect(Answer.today(question)).to match_array [recent_answer]
+    end
+  end
+
   describe '#scope sort_by_best' do
     let(:user) { create(:user) }
     let!(:question) { create(:question, author: user) }
@@ -23,6 +35,17 @@ RSpec.describe Answer, type: :model do
 
     it 'shows best answer first' do
       expect(Answer.all).to match_array [answer2, answer]
+    end
+  end
+
+  describe '#notify_subscribers' do
+    let(:user) { create(:user) }
+    let!(:question) { create(:question, author: user) }
+    let!(:new_answer) { build(:answer, question: question, author: user, created_at: 1.hour.ago) }
+
+    it 'calls AnswerNotifyJob#perform_later' do
+      expect(AnswerNotifyJob).to receive(:perform_later).with(new_answer)
+      new_answer.save!
     end
   end
 

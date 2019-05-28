@@ -35,7 +35,7 @@ RSpec.describe Ability, type: :model do
       let(:question) { create(:question, author: user) }
 
       it { should be_able_to :create, Subscription }
-      it { should be_able_to :destroy, create(:subscription, question: question, user: user), user: user }
+      it { should be_able_to :destroy, create(:subscription, question: question, author: user), author: user }
     end
 
     context 'Question' do

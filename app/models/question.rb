@@ -18,7 +18,7 @@ class Question < ApplicationRecord
 
   scope :today, -> { where(created_at: 24.hours.ago..Time.now) }
 
-  after_save :create_subscription
+  after_create :create_subscription, on: :create
 
   #after_create :calculate_reputation
   private
