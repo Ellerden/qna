@@ -7,7 +7,7 @@ class QuestionsController < ApplicationController
   before_action :find_subscription, only: %i[show update]
   after_action :publish_question, only: [:create]
 
-  authorize_resource
+  load_and_authorize_resource
 
   def index
     @questions = Question.all
@@ -34,8 +34,6 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    return head :forbidden unless current_user.author_of?(question)
-
     if question.destroy
       redirect_to questions_path, notice: 'Your question was successfully deleted.'
     else
@@ -44,14 +42,10 @@ class QuestionsController < ApplicationController
   end
 
   def edit
-    return head :forbidden unless current_user.author_of?(question)
-
     question.links.new
   end
 
   def update
-    return head :forbidden unless current_user.author_of?(question)
-
     if question.update(question_params)
       redirect_to question, notice: 'Your question was successfully edited'
     else

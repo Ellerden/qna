@@ -9,7 +9,5 @@ RSpec.describe 'DailyDigestService' do
       #subject.send_digest # undefined method `send_digest' for "AnswersDigestService":String
     end
     DailyDigestJob.perform_now
-
-    
   end
 end

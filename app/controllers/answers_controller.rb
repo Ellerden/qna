@@ -6,14 +6,13 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   after_action :publish_answer, only: [:create]
 
-  authorize_resource
+  load_and_authorize_resource
 
   def create
     @answer = current_user.answers.create(answer_params.merge(question_id: question.id))
   end
 
   def destroy
-    return head :forbidden unless current_user.author_of?(answer)
     answer.destroy
   end
 
@@ -21,7 +20,6 @@ class AnswersController < ApplicationController
   end
 
   def update
-    return head :forbidden unless current_user.author_of?(answer)
     answer.update(answer_params)
   end
 

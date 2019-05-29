@@ -113,9 +113,9 @@ RSpec.describe QuestionsController, type: :controller do
         expect { delete :destroy, params: { id: question } }.not_to change(Question, :count)
       end
 
-      it 'gets forbidden status trying to delete someone elses answer' do
+      it 'gets redirected to root path with authentication error trying to delete someone elses answer' do
         delete :destroy, params: { id: question }
-        expect(response.status).to eq(403)
+        expect(response.status).to eq(302)
       end
     end
   end
@@ -167,9 +167,9 @@ RSpec.describe QuestionsController, type: :controller do
         end.to_not change(question, :body)
       end
 
-      it 'gets forbidden status trying to edit someone elses question' do
+      it 'redirects to root path with access denied message trying to edit someone elses question' do
         patch :update, params: { id: question, question: { body: 'new body' } }
-        expect(response.status).to eq(403)
+        expect(response.status).to eq(302)
       end
     end
   end

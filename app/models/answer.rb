@@ -29,10 +29,6 @@ class Answer < ApplicationRecord
     end
   end
 
-  def self.today(question)
-    Answer.where(question: question, created_at: 24.hours.ago..Time.now).to_a
-  end
-
   def notify_subscribers
     AnswerNotifyJob.perform_later(self)
   end

@@ -16,17 +16,6 @@ RSpec.describe Answer, type: :model do
     expect(Answer.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end
 
-  describe '#scope today' do
-    let(:user) { create(:user) }
-    let!(:question) { create(:question, author: user) }
-    let!(:old_answer) { create(:answer, question: question, author: user, created_at: 1.day.ago) }
-    let!(:recent_answer) { create(:answer, question: question, author: user, created_at: 1.hour.ago) }
-
-    it 'shows answers of particular question created today' do
-      expect(Answer.today(question)).to match_array [recent_answer]
-    end
-  end
-
   describe '#scope sort_by_best' do
     let(:user) { create(:user) }
     let!(:question) { create(:question, author: user) }

@@ -17,7 +17,7 @@ class SubscriptionsController < ApplicationController
   private
 
   def question
-    @question ||= params[:question_id] ? Question.with_attached_files.find(params[:question_id]) : nil
+    @question ||= params[:question_id] ? Question.find(params[:question_id]) : nil
   end
 
   def subscription
