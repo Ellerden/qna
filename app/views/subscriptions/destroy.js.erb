@@ -1,0 +1,2 @@
+$('.notice').html("<%= j flash.now[:notice] %>");
+$('.question .subscriptions').html('<%= j render 'subscriptions/subscription', resource: @question %>');

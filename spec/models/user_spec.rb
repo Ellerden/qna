@@ -7,6 +7,7 @@ RSpec.describe User, type: :model do
   it { should have_many(:votes) }
   it { should have_many(:awards) }
   it { should have_many(:authorizations).dependent(:destroy) }
+  it { should have_many(:subscriptions).dependent(:destroy) }
 
   it { should validate_presence_of :email }
   it { should validate_presence_of :password }
@@ -55,6 +56,16 @@ RSpec.describe User, type: :model do
       it 'justifies the user is NOT the author' do
         expect(user).not_to be_author_of(question2)
       end
+    end
+  end
+
+  describe '#subscribed_to?' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, author: user) }
+    let(:subscription) { create(:subscription, question: question, author: user) }
+
+    it 'justifies user is subscribed to the question' do
+      expect(user).to be_subscribed_to(question)
     end
   end
 

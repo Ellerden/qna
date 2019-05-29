@@ -16,6 +16,8 @@ class Answer < ApplicationRecord
 
   scope :sort_by_best, -> { order(best: :desc, created_at: :asc) }
 
+  after_create :notify_subscribers, on: :create
+
   def rate_best
     previous_best = question.answers.where(best: true)
     transaction do
@@ -25,6 +27,10 @@ class Answer < ApplicationRecord
         self.update!(best: true)
       end
     end
+  end
+
+  def notify_subscribers
+    AnswerNotifyJob.perform_later(self)
   end
 
   private

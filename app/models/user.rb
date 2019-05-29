@@ -15,6 +15,8 @@ class User < ApplicationRecord
   has_many :awards
   has_many :votes
   has_many :authorizations, dependent: :destroy
+  has_many :subscriptions, class_name: 'Subscription', foreign_key: :author_id,
+                           dependent: :destroy
 
   def author_of?(resource)
     self.id == resource.author_id
@@ -43,5 +45,10 @@ class User < ApplicationRecord
 
     user.skip_confirmation!
     user if user.save
+  end
+
+  def subscribed_to?(resource)
+    resource.subscriptions.exists?(author: self)
+   # self.subscriptions.where(question_id: resource.id)
   end
 end

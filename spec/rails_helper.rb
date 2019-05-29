@@ -53,8 +53,8 @@ RSpec.configure do |config|
   config.include WaitForAjax, type: :feature
   config.include ApiHelpers, type: :request
 
-  #Capybara.javascript_driver = :selenium_chrome_headless
-  Capybara.javascript_driver = :selenium_chrome
+  Capybara.javascript_driver = :selenium_chrome_headless
+  #Capybara.javascript_driver = :selenium_chrome
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 

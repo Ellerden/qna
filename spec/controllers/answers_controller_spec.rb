@@ -57,13 +57,13 @@ RSpec.describe AnswersController, type: :controller do
       before { login(other_user) }
 
       it 'tries to delete not his/her answer' do
-        expect { delete :destroy, params: { id: answer } }.not_to change(Answer, :count)
+        expect { delete :destroy, params: { id: answer }, format: :js }.not_to change(Answer, :count)
       end
 
-      it 'gets forbidden status trying to delete someone elses answer' do
+      it 'redirected to root with authentication error message trying to delete someone elses answer' do
         delete :destroy, params: { id: answer }
 
-        expect(response.status).to eq(403)
+        expect(response.status).to eq(302)
       end
     end
   end
@@ -134,11 +134,6 @@ RSpec.describe AnswersController, type: :controller do
         post :set_best, params: { id: answer, format: :js }
         answer.reload
         expect(answer.best).to be false
-      end
-
-      it 'renders ranked answers' do
-        post :set_best, params: { id: answer, format: :js }
-        expect(response).to render_template :set_best
       end
     end
   end

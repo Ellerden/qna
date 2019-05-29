@@ -3,10 +3,11 @@
 class QuestionsController < ApplicationController
   include Voted
 
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!, except: %i[index show]
+  before_action :find_subscription, only: %i[show update]
   after_action :publish_question, only: [:create]
 
-  authorize_resource
+  load_and_authorize_resource
 
   def index
     @questions = Question.all
@@ -33,8 +34,6 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    return head :forbidden unless current_user.author_of?(question)
-
     if question.destroy
       redirect_to questions_path, notice: 'Your question was successfully deleted.'
     else
@@ -47,8 +46,6 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    return head :forbidden unless current_user.author_of?(question)
-
     if question.update(question_params)
       redirect_to question, notice: 'Your question was successfully edited'
     else
@@ -86,5 +83,9 @@ class QuestionsController < ApplicationController
         locals: { question: @question },
         )
     )
+  end
+
+  def find_subscription
+    @subscription = question.subscriptions.find_by(author_id: current_user.id) if current_user 
   end
 end

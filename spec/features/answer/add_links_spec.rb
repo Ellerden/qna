@@ -25,6 +25,7 @@ feature 'User can add links to answer', %q{
         fill_in 'Link name', with: 'Gist1'
         fill_in 'Url', with: gist_url
         click_on 'Add link'
+        wait_for_ajax
       end
 
       within all(".nested-fields")[1] do
@@ -33,7 +34,6 @@ feature 'User can add links to answer', %q{
       end
 
       click_on 'Create Answer'
-      #save_and_open_page
       wait_for_ajax
       within '.answers' do
         expect(page).to have_link 'Gist1', href: gist_url
