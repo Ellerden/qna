@@ -1,0 +1,5 @@
+= form_with url: search_path, method: :get, class: 'navbar-form', local: true do |f|
+  . class="md-form my-0"
+    =< f.text_field :query, { class: "form-control", placeholder: "Search", required: true }
+    =< f.select :category, options_for_select(Search::CATEGORIES), prompt: 'All', class: "mdb-select md-form colorful-select dropdown-primary"
+    = f.submit 'Search'

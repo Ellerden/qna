@@ -62,6 +62,9 @@ gem 'sinatra', require: false
 gem 'whenever', require: false
 gem 'bootstrap'
 
+gem "mysql2", '0.4.9'
+gem 'thinking-sphinx', '4.0.0'
+
 # network
 gem "octokit", "~> 4.0"
 
