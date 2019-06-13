@@ -1,4 +1,4 @@
-class Search < ApplicationRecord
+class Search #< ApplicationRecord
   CATEGORIES = %w[Question Answer Comment User]
 
   def self.find(query, category)

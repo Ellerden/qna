@@ -64,6 +64,7 @@ gem 'bootstrap'
 
 gem "mysql2", '0.4.9'
 gem 'thinking-sphinx', '4.0.0'
+gem 'database_cleaner'
 
 # network
 gem "octokit", "~> 4.0"
