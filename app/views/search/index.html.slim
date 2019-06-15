@@ -1,17 +1,6 @@
 h1 Search results
-
 - if @results.present?
-  -@results.each do |result|
-
-    - case result.class.to_s
-      - when 'Question' 
-        p = link_to result.title, question_path(result)
-      - when 'Answer'
-        p = link_to result.body, question_path(result.question)
-      - when 'Comment'
-        - commentable_link = result.commentable.is_a?(Answer) ? result.commentable.question : result.commentable
-        p = link_to result.body, question_path(commentable_link)
-      - when 'User'
-        p = result.email
+  - @results.each do |result|
+    = render "search/#{result.class.to_s.downcase}", result: result
 - else
   p No results found 

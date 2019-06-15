@@ -1,0 +1,2 @@
+- commentable_link = result.commentable.is_a?(Answer) ? result.commentable.question : result.commentable
+p = link_to result.body, question_path(commentable_link)

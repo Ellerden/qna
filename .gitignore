@@ -33,3 +33,4 @@
 dump.rdb
 config/*.sphinx.conf
 cd/sphinx
+db/sphinx/*
