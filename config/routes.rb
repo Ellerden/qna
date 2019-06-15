@@ -50,4 +50,5 @@ Rails.application.routes.draw do
   resources :files, only: :destroy
   resources :awards, only: :index
   resources :subscriptions, only: %i[create destroy]
+  get '/search', to: "search#index"
 end

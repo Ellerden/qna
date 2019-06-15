@@ -1,0 +1,6 @@
+h1 Search results
+- if @results.present?
+  - @results.each do |result|
+    = render "search/#{result.class.to_s.downcase}", result: result
+- else
+  p No results found 
