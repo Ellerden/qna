@@ -2,7 +2,6 @@
 
 Rails.application.configure do
   config.action_cable.allowed_request_origins = ["142.93.229.252", "qnaportal.site"]
-  set :sidekiq_config, -> { File.join(current_path, ‘config’, ‘sidekiq.yml’) }
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
