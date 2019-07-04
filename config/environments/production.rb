@@ -34,7 +34,12 @@ Rails.application.configure do
   config.assets.compile = false
 
   config.action_mailer.default_url_options = { host: '142.93.229.252' }
-
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: "142.93.229.252",
+    port: 25,
+    domain: "142.93.229.252",
+  }
   #config.action_mailer.smtp_settings = { address: '142.93.229.252', port: 25 }
   #config.action_mailer.perform_deliveries = true
   #config.action_mailer.delivery_method = :smtp
@@ -43,8 +48,6 @@ Rails.application.configure do
   #   port: 587,
   #   authentication: "plain",
   #   enable_starttls_auto: true,
-  #   user_name: 'ellerden@gmail.com',
-  #   password: '6ckstr8aheAD'
   #  # user_name: ENV['SMTP_USERNAME'],
   #  # password: ENV['SMTP_PASSWORD']
   # }
