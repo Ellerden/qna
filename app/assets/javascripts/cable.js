@@ -4,7 +4,6 @@
 //= require action_cable
 //= require_self
 //= require_tree ./channels
-App.cable = ActionCable.createConsumer("/cable")
 
 (function() {
   this.App || (this.App = {});
