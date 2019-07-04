@@ -20,6 +20,7 @@
 //= require skim
 //= require cocoon
 //= require_tree .
+App.cable = ActionCable.createConsumer("/cable")
 
 var App = App || {};
 App.cable = ActionCable.createConsumer();
