@@ -2,8 +2,10 @@
 
 Rails.application.configure do
 
-  config.action_cable.allowed_request_origins = ["http://qnaportal.site/"]
-  config.action_cable.url = 'ws://qnaportal.site/cable'
+  config.action_cable.allowed_request_origins = ["http://142.93.229.252/", "http://qnaportal.site/"]
+  config.action_cable.url = [/ws:\/\/*/, /wss:\/\/*/]
+  #config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/]
+  #config.action_cable.url = 'wss://qnaportal.site/cable'
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
