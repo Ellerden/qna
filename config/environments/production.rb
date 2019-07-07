@@ -2,7 +2,7 @@
 
 Rails.application.configure do
 
-  config.action_cable.allowed_request_origins = ["http://142.93.229.252/", "http://qnaportal.site/"]
+  config.action_cable.allowed_request_origins = ["https://142.93.229.252/", "https://qnaportal.site/", "http://142.93.229.252/", "http://qnaportal.site/"]
   config.action_cable.url = [/ws:\/\/*/, /wss:\/\/*/]
   #config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/]
   #config.action_cable.url = 'wss://qnaportal.site/cable'
@@ -93,7 +93,14 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.default_url_options = { host: 'qnaportal.site', port: 25 } 
+  config.action_mailer.default_url_options = { host: 'qnaportal.site' } 
+  config.action_mailer_smtp_settings = {
+    enable_starttls_auto: false,
+    domain: 'qnaportal.site',
+    address: "qnaportal.site",
+    port: 25,
+    openssl_verify_mode: 'none'
+  }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
