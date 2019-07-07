@@ -44,12 +44,12 @@ class AnswersController < ApplicationController
   end
 
   def publish_answer
-    return if @answer.errors.any?
+    return if answer.errors.any?
     AnswersChannel.broadcast_to(
       question,
       ApplicationController.render(
           partial: 'answers/answer.json.jbuilder',
-          locals: { answer: @answer }
+          locals: { answer: answer }
         )
     )
   end
