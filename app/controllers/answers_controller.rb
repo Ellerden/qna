@@ -44,9 +44,6 @@ class AnswersController < ApplicationController
   end
 
   def publish_answer
-    pp @answer.errors.any?
-    pp @answer
-    pp @question
     return if @answer.errors.any?
     AnswersChannel.broadcast_to(
       question,

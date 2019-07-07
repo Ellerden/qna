@@ -32,7 +32,6 @@ class CommentsController < ApplicationController
   end
 
   def publish_comment
-    pp @comment.errors.any?
     return if @comment.errors.any?
     # транслируем прямо на Question или на answer.question - если тип не Question
     resource_to_broadcast = @resource.class == Question ? @resource : @resource.question
@@ -42,17 +41,3 @@ class CommentsController < ApplicationController
     )
   end
 end
-
-
-
-
-    # ActionCable.server.broadcast(
-    #   'questions',
-    #   ApplicationController.render_with_signed_in_user(
-    #     current_user,
-    #     partial: 'questions/title',
-    #     locals: { question: @question },
-    #     )
-    # )
-
-
