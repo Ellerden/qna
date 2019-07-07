@@ -5,7 +5,7 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: %i[index show]
   before_action :find_subscription, only: %i[show update]
-  after_action :publish_question, only: [:create]
+  after_action :publish_question, only: %i[create]
 
   load_and_authorize_resource
 
@@ -73,14 +73,14 @@ class QuestionsController < ApplicationController
   end
 
   def publish_question
-    return if @question.errors.any?
+    return if question.errors.any?
 
     ActionCable.server.broadcast(
       'questions',
       ApplicationController.render_with_signed_in_user(
         current_user,
         partial: 'questions/title',
-        locals: { question: @question },
+        locals: { question: question },
         )
     )
   end

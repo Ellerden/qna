@@ -13,7 +13,7 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    answer.destroy
+    answer.destroy if current_user.author_of?(answer)
   end
 
   def edit
@@ -44,6 +44,9 @@ class AnswersController < ApplicationController
   end
 
   def publish_answer
+    pp @answer.errors.any?
+    pp @answer
+    pp @question
     return if @answer.errors.any?
     AnswersChannel.broadcast_to(
       question,
