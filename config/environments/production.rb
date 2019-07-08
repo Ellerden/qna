@@ -91,15 +91,15 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "qna_#{Rails.env}"
 
   config.action_mailer.perform_caching = false
-  config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
   config.action_mailer.default_url_options = { host: 'qnaportal.site' } 
+  config.action_mailer.delivery_method = :sendmail
   config.action_mailer_smtp_settings = {
-    enable_starttls_auto: false,
+    enable_starttls_auto: true,
     domain: 'qnaportal.site',
     address: "qnaportal.site",
-    #authentication: 'plain',
-    port: 25,
+    authentication: 'plain',
+    port: 25
     #openssl_verify_mode: 'none'
   }
   # Ignore bad email addresses and do not raise email delivery errors.
