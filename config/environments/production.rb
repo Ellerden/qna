@@ -37,8 +37,8 @@ Rails.application.configure do
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
 
-  config.action_mailer.default_url_options = { host: '142.93.229.252' }
-  config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.default_url_options = { host: '142.93.229.252' }
+  # config.action_mailer.delivery_method = :smtp
   # config.action_mailer.smtp_settings = {
   #   address: "142.93.229.252",
   #   port: 25,
@@ -98,10 +98,10 @@ Rails.application.configure do
     enable_starttls_auto: false,
     domain: 'qnaportal.site',
     address: "qnaportal.site",
+    #authentication: 'plain',
     port: 25,
-    openssl_verify_mode: 'none'
+    #openssl_verify_mode: 'none'
   }
-
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
