@@ -6,6 +6,7 @@
 server "142.93.229.252", user: "deployer", roles: %w{app db web}, primary: true
 set :rails_env, :production
 set :sidekiq_config, -> { File.join(shared_path, 'config', 'sidekiq.yml') }
+set :sidekiq_options_per_process, ["--queue default --queue mailers"]
 
 # server "example.com", user: "deploy", roles: %w{app db web}, my_property: :my_value
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
