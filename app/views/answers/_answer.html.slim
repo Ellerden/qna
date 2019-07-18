@@ -1,35 +1,36 @@
 . class="answer_#{answer.id}" data={ aid: answer.id }
-  .answer-vote
-    = render 'shared/votes', resource: answer
+  - cache answer do
+    .answer-vote
+      = render 'shared/votes', resource: answer
 
-  - if can?(:set_best, answer)
-    => link_to 'Best', set_best_answer_path(answer), method: :patch, remote: true, class: 'set-best-answer'
+    - if can?(:set_best, answer)
+      => link_to 'Best', set_best_answer_path(answer), method: :patch, remote: true, class: 'set-best-answer'
 
-  = answer.body
+    = answer.body
 
-  - if answer.best?
-    .answer-award
-      img src=url_for(answer.award.image) alt=answer.award.name height="50" width="50"
+    - if answer.best?
+      .answer-award
+        img src=url_for(answer.award.image) alt=answer.award.name height="50" width="50"
 
-  .links
-    - if answer.links.present?
-      p Links:
-      ul
-        - answer.links.each do |link|
-          . class="link_#{link.id}"
-            li
-              - if link.gist?
-                p= link.gist_content
-              = link_to link.name, link.url
+    .links
+      - if answer.links.present?
+        p Links:
+        ul
+          - answer.links.each do |link|
+            . class="link_#{link.id}"
+              li
+                - if link.gist?
+                  p= link.gist_content
+                = link_to link.name, link.url
 
-  .files
-    - if answer.files.attached?
-      - answer.files.each do |file|
-        p= link_to file.filename.to_s, url_for(file), target: :blank
-        - if current_user&.author_of?(answer)
-          p= link_to 'Delete File', file_path(file.id), method: :delete, remote: true
+    .files
+      - if answer.files.attached?
+        - answer.files.each do |file|
+          p= link_to file.filename.to_s, url_for(file), target: :blank
+          - if current_user&.author_of?(answer)
+            p= link_to 'Delete File', file_path(file.id), method: :delete, remote: true
 
-  = render "comments/comments", resource: answer
+    = render "comments/comments", resource: answer
 
   - if can?(:modify, answer)
     =< link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }

@@ -67,6 +67,7 @@ gem 'thinking-sphinx', '4.0.0'
 gem 'database_cleaner'
 gem 'mini_racer'
 gem 'unicorn'
+gem 'redis-rails'
 
 # network
 gem "octokit", "~> 4.0"
